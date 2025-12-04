@@ -1,5 +1,7 @@
 #include "l.h"
 
+struct s_oprange oprange[ALAST];
+
 #define	OPVCC(o,xo,oe,rc) (((o)<<26)|((xo)<<1)|((oe)<<10)|((rc)&1))
 #define	OPCC(o,xo,rc) OPVCC((o),(xo),0,(rc))
 #define	OP(o,xo) OPVCC((o),(xo),0,0)

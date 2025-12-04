@@ -86,11 +86,12 @@ struct	Optab
 	char	size;
 	char	param;
 };
-struct
+struct s_oprange
 {
 	Optab*	start;
 	Optab*	stop;
-} oprange[ALAST];
+};
+extern struct s_oprange oprange[ALAST];
 
 enum
 {

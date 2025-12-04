@@ -3,6 +3,9 @@
 #include "y.tab.h"
 #include <ctype.h>
 
+struct s_fi fi;
+struct s_h h[NSYM];
+
 void
 main(int argc, char *argv[])
 {
