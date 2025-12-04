@@ -8,6 +8,7 @@
 #include	<unistd.h>
 #include	<signal.h>
 #include 	<pthread.h>
+#include	<sched.h>
 #include	<limits.h>
 #include	<errno.h>
 #include	<semaphore.h>
@@ -89,14 +90,14 @@ tramp(void *arg)
 	os->self = pthread_self();
 	if(pthread_setspecific(prdakey, arg))
 		panic("set specific data failed in tramp\n");
-	if(0){
-		pthread_attr_t attr;
-		memset(&attr, 0, sizeof(attr));
-		pthread_getattr_np(pthread_self(), &attr);
-		size_t s;
-		pthread_attr_getstacksize(&attr, &s);
-		print("stack size = %d\n", s);
-	}
+	/* if(0){ */
+	/* 	pthread_attr_t attr; */
+	/* 	memset(&attr, 0, sizeof(attr)); */
+	/* 	pthread_getattr_np(pthread_self(), &attr); */
+	/* 	size_t s; */
+	/* 	pthread_attr_getstacksize(&attr, &s); */
+	/* 	print("stack size = %d\n", s); */
+	/* } */
 	p->func(p->arg);
 	pexit("{Tramp}", 0);
 	return nil;
@@ -218,7 +219,8 @@ osyield(void)
 {
 //	pthread_yield_np();
 	/* define pthread_yield to be sched_yield or pthread_yield_np if required */
-	pthread_yield();
+	//pthread_yield();
+	sched_yield();
 }
 
 void
