@@ -6,6 +6,7 @@
 #include	"draw.h"
 #include	"version.h"
 
+void	(*coherence)(void) = nil;
 int		rebootargc = 0;
 char**		rebootargv;
 static	char	*imod = "/dis/emuinit.dis";
