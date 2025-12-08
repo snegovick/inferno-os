@@ -24,11 +24,13 @@ for d in $(ls); do
 				        echo "Remove ${f}"
 				        rm $f
             else
-			          cat ${f} | mandoc -Thtml | python3 ${cwd}/mklinks.py -p /man/ -o ${cwd}/output/$d/$f.html
-                #cat ${f} | mandoc -Thtml > ${cwd}/output/$d/$f.html
+			          cat ${f} | mandoc -Thtml | python3 ${cwd}/lib/mklinks.py -p /man/ -o ${cwd}/output/$d/$f.html
 			          echo "Processed ${d}/${f}"
             fi
 		    done
+        rm ${cwd}/output/$d/INDEX.html
+        python3 ${cwd}/lib/mksectionindex.py /man/ ${d} > ${cwd}/output/$d/index.html
 		    popd
 	  fi
 done
+cp ${cwd}/index.html output
