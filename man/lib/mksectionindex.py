@@ -29,7 +29,7 @@ if __name__ == "__main__":
 <pre>
 """
 
-    for f in os.listdir():
+    for f in sorted(os.listdir()):
         if f == 'INDEX':
             continue
         index_file += f"<a href=\"{prefix}{section}/{f}.html\">{f}</a>\n"
