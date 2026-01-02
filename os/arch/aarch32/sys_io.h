@@ -1,3 +1,3 @@
-#if defined(CONFIG_ARCH_AARCH32)
-#include <arch/aarch32/sys_io.h>
+#if defined(CONFIG_ARCH_SUB_ARMV7E_M)
+#include <arch/aarch32/armv7e_m/sys_io.h>
 #endif
