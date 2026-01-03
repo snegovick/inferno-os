@@ -3,6 +3,15 @@
 #include <arch/aarch32/cmsis/core_cm7.h>
 
 struct device mpu;
+struct device clkctrl;
+
+struct rcc_clk_init {
+  uint32_t ClockType;
+  uint32_t SYSCLKSource;
+  uint32_t AHBCLKDivider;
+  uint32_t APB1CLKDivider;
+  uint32_t APB2CLKDivider;
+};
 
 static void __cpu_cache_enable(void)
 {
@@ -13,101 +22,82 @@ static void __cpu_cache_enable(void)
   SCB_EnableDCache();
 }
 
-#define __FLASH_ART_ENABLE()  SET_BIT(FLASH->ACR, FLASH_ACR_ARTEN)
-#define __FLASH_PREFETCH_BUFFER_ENABLE()  (FLASH->ACR |= FLASH_ACR_PRFTEN)
+extern volatile uint64_t uptime_ctr;
+
+#define __FLASH_ART_ENABLE() SET_BIT(FLASH->ACR, FLASH_ACR_ARTEN)
+#define __FLASH_PREFETCH_BUFFER_ENABLE() (FLASH->ACR |= FLASH_ACR_PRFTEN)
+#define TICK_INT_PRIORITY 0x0FU
 
 static void __nvic_setpriority(IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority)
-{ 
+{
   uint32_t prioritygroup = 0x00;
-    
   prioritygroup = NVIC_GetPriorityGrouping();
-  
   NVIC_SetPriority(IRQn, NVIC_EncodePriority(prioritygroup, PreemptPriority, SubPriority));
 }
 
+static void __rcc_get_clock_config(struct rcc_clk_init  *clkinit, uint32_t *flash_latency)
+{
+  /* Set all possible values for the Clock type parameter --------------------*/
+  clkinit->ClockType = RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+
+  /* Get the SYSCLK configuration --------------------------------------------*/
+  clkinit->SYSCLKSource = (uint32_t)(RCC->CFGR & RCC_CFGR_SW);
+
+  /* Get the HCLK configuration ----------------------------------------------*/
+  clkinit->AHBCLKDivider = (uint32_t)(RCC->CFGR & RCC_CFGR_HPRE);
+
+  /* Get the APB1 configuration ----------------------------------------------*/
+  clkinit->APB1CLKDivider = (uint32_t)(RCC->CFGR & RCC_CFGR_PPRE1);
+
+  /* Get the APB2 configuration ----------------------------------------------*/
+  clkinit->APB2CLKDivider = (uint32_t)((RCC->CFGR & RCC_CFGR_PPRE2) >> 3);
+
+  /* Get the Flash Wait State (Latency) configuration ------------------------*/
+  *flash_latency = (uint32_t)(FLASH->ACR & FLASH_ACR_LATENCY);
+}
+
+
 static int __init_tick (uint32_t TickPriority)
 {
-  RCC_ClkInitTypeDef    clkconfig;
-  uint32_t              uwTimclock, uwAPB1Prescaler = 0U;
-  uint32_t              uwPrescalerValue = 0U;
-  uint32_t              pFLatency;
-  
-    /*Configure the TIM6 IRQ priority */
-  __nvic_setpriority(TIM6_DAC_IRQn, TickPriority ,0U);
-  
+  struct rcc_clk_init clkconfig;
+  uint32_t uwTimclock, uwAPB1Prescaler = 0U;
+  uint32_t pFLatency;
+
+  /*Configure the TIM6 IRQ priority */
+  __nvic_setpriority(SysTick_IRQn, TickPriority, 0U);
+
   /* Enable the TIM6 global Interrupt */
-  NVIC_EnableIRQ(TIM6_DAC_IRQn);
-  
-  /* Enable TIM6 clock */
-  __HAL_RCC_TIM6_CLK_ENABLE();
-  
+  NVIC_EnableIRQ(SysTick_IRQn);
+
   /* Get clock configuration */
-  HAL_RCC_GetClockConfig(&clkconfig, &pFLatency);
-  
-  /* Get APB1 prescaler */
-  uwAPB1Prescaler = clkconfig.APB1CLKDivider;
-  
-  /* Compute TIM6 clock */
-  if (uwAPB1Prescaler == RCC_HCLK_DIV1) 
-  {
-    uwTimclock = HAL_RCC_GetPCLK1Freq();
-  }
-  else
-  {
-    uwTimclock = 2*HAL_RCC_GetPCLK1Freq();
-  }
-  
-  /* Compute the prescaler value to have TIM6 counter clock equal to 1MHz */
-  uwPrescalerValue = (uint32_t) ((uwTimclock / 1000000U) - 1U);
-  
-  /* Initialize TIM6 */
-  TimHandle.Instance = TIM6;
-  
-  /* Initialize TIMx peripheral as follow:
-  + Period = [(TIM6CLK/1000) - 1]. to have a (1/1000) s time base.
-  + Prescaler = (uwTimclock/1000000 - 1) to have a 1MHz counter clock.
-  + ClockDivision = 0
-  + Counter direction = Up
-  */
-  TimHandle.Init.Period = (1000000U / 1000U) - 1U;
-  TimHandle.Init.Prescaler = uwPrescalerValue;
-  TimHandle.Init.ClockDivision = 0;
-  TimHandle.Init.CounterMode = TIM_COUNTERMODE_UP;
-  if(HAL_TIM_Base_Init(&TimHandle) == HAL_OK)
-  {
-    /* Start the TIM time Base generation in interrupt mode */
-    return HAL_TIM_Base_Start_IT(&TimHandle);
-  }
-  
+  __rcc_get_clock_config(&clkconfig, &flash_latency);
+
+  uint32_t sys_rate = 0;
+  stm32f7_clock_control_get_rate(STM32F769_RCC_SYS_SET_OFFSET, &sys_rate);
+
+  sys_write32(((sys_rate / 1000) - 1) & SysTick_LOAD_RELOAD_Msk, SysTick->LOAD);
+  sys_clear_bits(SysTick->CTRL, SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_TICKINT_Msk);
+
   /* Return function status */
-  return HAL_ERROR;
+  return 0;
 }
 
 void arch_init(void) {
+  uptime_ctr = 0;
   stm32f7_mpu_init(&mpu);
-
   __cpu_cache_enable();
 
-  /* Configure Instruction cache through ART accelerator */ 
 #if (CONFIG_CM7_ART_ACCELERATOR_ENABLE != 0)
   __FLASH_ART_ENABLE();
 #endif /* ART_ACCELERATOR_ENABLE */
 
-  /* Configure Flash prefetch */
 #if (CONFIG_CM7_PREFETCH_ENABLE != 0U)
   __FLASH_PREFETCH_BUFFER_ENABLE();
 #endif /* PREFETCH_ENABLE */
 
-  /* Set Interrupt Group Priority */
-  //HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
   NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
+  __init_tick(TICK_INT_PRIORITY);
 
-  /* Use systick as time base source and configure 1ms tick (default clock after Reset is HSI) */
-  HAL_InitTick(TICK_INT_PRIORITY);
-
-  /* Init the low level hardware */
-  HAL_MspInit();
-
-  /* Return function status */
-  return HAL_OK;
+  stm32f769_clock_control_init(&clkctrl);
+  return;
 }
