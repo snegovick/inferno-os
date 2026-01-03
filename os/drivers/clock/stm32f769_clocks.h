@@ -1,8 +1,10 @@
 #ifndef __DD_STM32F769_CLOCKS_H__
 #define __DD_STM32F769_CLOCKS_H__
 
-#define STM32F769_CLOCK_CONFIG(reg, bit) \
-	(((STM32F769_RCC_ ## reg ## _OFFSET) << 6U) | (bit))
+#define STM32F769_CLOCK_CONFIG(reg, bit)                \
+  (((STM32F769_RCC_ ## reg ## _OFFSET) << 6U) | (bit))
+
+#define STM32F769_RCC_SYS_SET_OFFSET        0x80U
 
 #define STM32F769_RCC_AHB1_SET_OFFSET       0x30U
 #define STM32F769_RCC_AHB2_SET_OFFSET       0x34U

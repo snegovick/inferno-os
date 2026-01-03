@@ -6,5 +6,6 @@
 int stm32f769_clock_control_on(uint16_t id);
 int stm32f769_clock_control_off(uint16_t id);
 int stm32f769_clock_control_get_rate(uint16_t id, uint32_t *rate);
+int stm32f769_clock_control_init(struct device *dev);
 
 #endif/*__STM32F769_CLOCK_CONTROL_H__*/
