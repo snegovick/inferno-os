@@ -1,9 +1,14 @@
+#include <arch/aarch32/cmsis/core_cm7.h>
+
 #include <drivers/include/device.h>
 #include <drivers/memory/stm32f7_mpu.h>
-#include <arch/aarch32/cmsis/core_cm7.h>
+#include <drivers/clock/stm32f769_clocks.h>
+#include <drivers/clock/stm32f769_clock_control.h>
+#include <drivers/uart/stm32f7_uart.h>
 
 struct device mpu;
 struct device clkctrl;
+struct device usart1;
 
 struct rcc_clk_init {
   uint32_t ClockType;
@@ -13,6 +18,14 @@ struct rcc_clk_init {
   uint32_t APB2CLKDivider;
 };
 
+extern volatile uint64_t uptime_ctr;
+
+void wait(uint32_t c) {
+  uint64_t end = uptime_ctr + c;
+  while (uptime_ctr < end) {
+  }
+}
+
 static void __cpu_cache_enable(void)
 {
   /* Enable I-Cache */
@@ -21,8 +34,6 @@ static void __cpu_cache_enable(void)
   /* Enable D-Cache */
   SCB_EnableDCache();
 }
-
-extern volatile uint64_t uptime_ctr;
 
 #define __FLASH_ART_ENABLE() SET_BIT(FLASH->ACR, FLASH_ACR_ARTEN)
 #define __FLASH_PREFETCH_BUFFER_ENABLE() (FLASH->ACR |= FLASH_ACR_PRFTEN)
@@ -99,5 +110,25 @@ void arch_init(void) {
   __init_tick(TICK_INT_PRIORITY);
 
   stm32f769_clock_control_init(&clkctrl);
+
+  stm32f769_clock_control_on(STM32F769_CLOCK_USART1);
+
+  struct uart_data u1_data;
+  u1_data.dev = &usart1;
+  u1_data.baudrate = 115200;
+  u1_data.parity = UART_CFG_PARITY_NONE;
+  u1_data.stop_bits = UART_CFG_STOP_BITS_1;
+  u1_data.data_bits = UART_CFG_DATA_BITS_8;
+
+  usart1.devptr = USART1;
+  usart1.data = &u1_data;
+
+  stm32f7_uart_init(&usart1);
+  stm32f7_uart_tx(&usart1, "Start\r\n");
+
+  while (1) {
+    stm32f7_uart_tx(&usart1, "Test\r\n");
+    wait(1000);
+  }
   return;
 }
