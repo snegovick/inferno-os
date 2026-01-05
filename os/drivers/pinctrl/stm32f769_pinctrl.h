@@ -1,0 +1,53 @@
+#ifndef __DT_BINDINGS_PINCTRL_STM32F769_AF_H__
+#define __DT_BINDINGS_PINCTRL_STM32F769_AF_H__
+
+#define STM32F769_AF0 0U
+#define STM32F769_AF1 1U
+#define STM32F769_AF2 2U
+#define STM32F769_AF3 3U
+#define STM32F769_AF4 4U
+#define STM32F769_AF5 5U
+#define STM32F769_AF6 6U
+#define STM32F769_AF7 7U
+#define STM32F769_AF8 8U
+#define STM32F769_AF9 9U
+#define STM32F769_AF10 10U
+#define STM32F769_AF11 11U
+#define STM32F769_AF12 12U
+#define STM32F769_AF13 13U
+#define STM32F769_AF14 14U
+#define STM32F769_AF15 15U
+#define STM32F769_ANALOG 16U
+
+#define STM32F769_PORT_MSK 0xFU
+#define STM32F769_PORT_POS 0U
+#define STM32F769_PIN_MSK 0xFU
+#define STM32F769_PIN_POS 4U
+#define STM32F769_AF_MSK 0xFU
+#define STM32F769_AF_POS 8U
+
+#define STM32F769_PORT_GET(pinmux) \
+	(((pinmux) >> STM32F769_PORT_POS) & STM32F769_PORT_MSK)
+
+#define STM32F769_PIN_GET(pinmux) \
+	(((pinmux) >> STM32F769_PIN_POS) & STM32F769_PIN_MSK)
+
+#define STM32F769_AF_GET(pinmux) \
+	(((pinmux) >> STM32F769_AF_POS) & STM32F769_AF_MSK)
+
+/**
+ * - 0..3: port
+ * - 4..7: pin
+ * - 8..13: af
+ * 
+ * port: Port ('A'..'K')
+ * pin: Pin (0..15)
+ * af: Alternate function (ANALOG, AFx, x=0..15)
+ */
+
+#define STM32F769_PINMUX_AF(port, pin, af)					\
+	((((port) & STM32F769_PORT_MSK) << STM32F769_PORT_POS) |	\
+	 (((pin) & STM32F769_PIN_MSK) << STM32F769_PIN_POS) |			\
+	 (((STM32F769_ ## af) & STM32F769_AF_MSK) << STM32F769_AF_POS))
+
+#endif/*__DT_BINDINGS_PINCTRL_STM32F769_AF_H_ */
