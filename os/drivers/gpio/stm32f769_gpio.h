@@ -3,8 +3,6 @@
 
 #include <stdint.h>
 
-GPIO_TypeDef *stm32f769_get_port(unsigned int port_idx);
-uint16_t stm32f769_get_port_clkid(unsigned int port_idx);
 int stm32f769_gpio_configure(struct device *dev, uint32_t pin, uint32_t flags);
 int stm32f769_gpio_configure_analog(struct device *dev, uint32_t pin, uint32_t flags);
 int stm32f769_gpio_configure_af(struct device *dev, uint32_t pin, uint32_t flags);

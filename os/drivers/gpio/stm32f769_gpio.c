@@ -1,5 +1,12 @@
-#include "gpio.h"
 #include <arch/sys_io.h>
+#include <arch/aarch32/armv7e_m/stm32f7/stm32f769xx.h>
+#include <drivers/pinctrl/stm32f769_pinctrl.h>
+#include <drivers/clock/stm32f769_clocks.h>
+#include <drivers/clock/stm32f769_clock_control.h>
+
+#include <stddef.h>
+
+#include "gpio.h"
 /* #include "memory_map.h" */
 /* #include "soc_gpio.h" */
 /* #include "soc.h" */
@@ -8,213 +15,219 @@
 
 int stm32f769_gpio_configure_analog(struct device *dev, uint32_t pin, uint32_t flags)
 {
-//	const struct gpio_stm32f769_config *config = port->config;
-  uint32_t port_idx = STM32F769_PORT_GET(pin);
+//  const struct gpio_stm32f769_config *config = port->config;
   GPIO_TypeDef *p = NULL;
   if (dev == NULL) {
+    uint32_t port_idx = STM32F769_PORT_GET(pin);
     p = stm32f769_get_port(port_idx);
   } else {
     p = dev->devptr;
   }
   
-  uint32_t moder = sys_read32(p->MODER);
-  uint32_t ospeedr = sys_read32(p->OSPEEDR);
-  uint32_t pupdr = sys_read32(p->PUPDR);
-  uint32_t otyper = sys_read32(p->OTYPER);
+  uint32_t moder = READ_REG(p->MODER);
+  uint32_t ospeedr = READ_REG(p->OSPEEDR);
+  uint32_t pupdr = READ_REG(p->PUPDR);
+  uint32_t otyper = READ_REG(p->OTYPER);
 
-  moder |= ((0x3) << (pin * 2));
-  sys_write32(moder, p->MODER);
+  uint32_t pin_num = pin & 0xf;
+
+  moder |= ((0x3) << (pin_num * 2));
+  WRITE_REG(p->MODER, moder);
 
   // Low speed
-  ospeedr &= ~((0x3) << (pin * 2));
-  sys_write32(ospeedr, p->OSPEEDR);
+  ospeedr &= ~((0x3) << (pin_num * 2));
+  WRITE_REG(p->OSPEEDR, ospeedr);
 
   if ((flags & GPIO_OPEN_DRAIN) != 0U) {
-    otyper |= (1 << pin);
+    otyper |= (1 << pin_num);
   } else {
-    otyper &= ~(1 << pin);
+    otyper &= ~(1 << pin_num);
   }
-  sys_write32(otyper, p->OTYPER);
+  WRITE_REG(p->OTYPER, otyper);
 
-	if ((flags & GPIO_PULL_UP) != 0U) {
-		pupdr &= ~(0x3 << (pin * 2));
-		pupdr |= (0x1 << (pin * 2));
-	} else if ((flags & GPIO_PULL_DOWN) != 0U) {
-		pupdr &= ~(0x3 << (pin * 2));
-		pupdr |= (0x2 << (pin * 2));
-	} else {
-		pupdr &= ~(0x3 << (pin * 2));
-	}
+  if ((flags & GPIO_PULL_UP) != 0U) {
+    pupdr &= ~(0x3 << (pin_num * 2));
+    pupdr |= (0x1 << (pin_num * 2));
+  } else if ((flags & GPIO_PULL_DOWN) != 0U) {
+    pupdr &= ~(0x3 << (pin_num * 2));
+    pupdr |= (0x2 << (pin_num * 2));
+  } else {
+    pupdr &= ~(0x3 << (pin_num * 2));
+  }
 
-  sys_write32(pupdr, p->PUPDR);
+  WRITE_REG(p->PUPDR, pupdr);
 
-	return 0;
+  return 0;
 }
 
 int stm32f769_gpio_configure_af(struct device *dev, uint32_t pin, uint32_t flags)
 {
-//	const struct gpio_stm32f769_config *config = port->config;
-  uint32_t port_idx = STM32F769_PORT_GET(pin);
+//  const struct gpio_stm32f769_config *config = port->config;
   GPIO_TypeDef *p = NULL;
   if (dev == NULL) {
+    uint32_t port_idx = STM32F769_PORT_GET(pin);
     p = stm32f769_get_port(port_idx);
   } else {
     p = dev->devptr;
   }
-  
-  uint32_t moder = sys_read32(p->MODER);
-  uint32_t ospeedr = sys_read32(p->OSPEEDR);
-  uint32_t pupdr = sys_read32(p->PUPDR);
-  uint32_t otyper = sys_read32(p->OTYPER);
 
-  moder &= ~((0x3) << (pin * 2));
-  moder |= ((0x2) << (pin * 2));
-  sys_write32(moder, p->MODER);
+  uint32_t pin_num = pin & 0xf;
+  uint32_t moder = READ_REG(p->MODER);
+  uint32_t ospeedr = READ_REG(p->OSPEEDR);
+  uint32_t pupdr = READ_REG(p->PUPDR);
+  uint32_t otyper = READ_REG(p->OTYPER);
+
+  moder &= ~((0x3) << (pin_num * 2));
+  moder |= ((0x2) << (pin_num * 2));
+  WRITE_REG(p->MODER, moder);
 
   // Low speed
-  ospeedr &= ~((0x3) << (pin * 2));
-  sys_write32(ospeedr, p->OSPEEDR);
+  ospeedr &= ~((0x3) << (pin_num * 2));
+  WRITE_REG(p->OSPEEDR, ospeedr);
 
   if ((flags & GPIO_OPEN_DRAIN) != 0U) {
-    otyper |= (1 << pin);
+    otyper |= (1 << pin_num);
   } else {
-    otyper &= ~(1 << pin);
+    otyper &= ~(1 << pin_num);
   }
-  sys_write32(otyper, p->OTYPER);
+  WRITE_REG(p->OTYPER, otyper);
 
-	if ((flags & GPIO_PULL_UP) != 0U) {
-		pupdr &= ~(0x3 << (pin * 2));
-		pupdr |= (0x1 << (pin * 2));
-	} else if ((flags & GPIO_PULL_DOWN) != 0U) {
-		pupdr &= ~(0x3 << (pin * 2));
-		pupdr |= (0x2 << (pin * 2));
-	} else {
-		pupdr &= ~(0x3 << (pin * 2));
-	}
+  if ((flags & GPIO_PULL_UP) != 0U) {
+    pupdr &= ~(0x3 << (pin_num * 2));
+    pupdr |= (0x1 << (pin_num * 2));
+  } else if ((flags & GPIO_PULL_DOWN) != 0U) {
+    pupdr &= ~(0x3 << (pin_num * 2));
+    pupdr |= (0x2 << (pin_num * 2));
+  } else {
+    pupdr &= ~(0x3 << (pin_num * 2));
+  }
 
-  sys_write32(pupdr, p->PUPDR);
+  WRITE_REG(p->PUPDR, pupdr);
 
-	return 0;
+  return 0;
 }
 
 int stm32f769_gpio_configure(struct device *dev, uint32_t pin, uint32_t flags)
 {
-//	const struct gpio_stm32f769_config *config = port->config;
-  uint32_t port_idx = STM32F769_PORT_GET(pin);
+//  const struct gpio_stm32f769_config *config = port->config;
   GPIO_TypeDef *p = NULL;
   if (dev == NULL) {
+    uint32_t port_idx = STM32F769_PORT_GET(pin);
     p = stm32f769_get_port(port_idx);
   } else {
     p = dev->devptr;
   }
-  
-  uint32_t moder = sys_read32(p->MODER);
-  uint32_t ospeedr = sys_read32(p->OSPEEDR);
-  uint32_t pupdr = sys_read32(p->PUPDR);
-  uint32_t otyper = sys_read32(p->OTYPER);
 
-	if ((flags & GPIO_OUTPUT) != 0U) {
+  uint32_t pin_num = pin & 0xf;
+  uint32_t moder = READ_REG(p->MODER);
+  uint32_t ospeedr = READ_REG(p->OSPEEDR);
+  uint32_t pupdr = READ_REG(p->PUPDR);
+  uint32_t otyper = READ_REG(p->OTYPER);
+
+  if ((flags & GPIO_OUTPUT) != 0U) {
     // GPIO mode
-    moder &= ~((0x3) << (pin * 2));
-    moder |= (0x01 << (pin * 2));
-    sys_write32(moder, p->MODER);
+    moder &= ~((0x3) << (pin_num * 2));
+    moder |= (0x01 << (pin_num * 2));
+    WRITE_REG(p->MODER, moder);
 
     // Low speed
-    ospeedr &= ~((0x3) << (pin * 2));
-    sys_write32(ospeedr, p->OSPEEDR);
+    ospeedr &= ~((0x3) << (pin_num * 2));
+    WRITE_REG(p->OSPEEDR, ospeedr);
 
-		if ((flags & GPIO_OUTPUT_INIT_HIGH) != 0U) {
-      sys_write32(BIT(pin), p->BSRR);
-		} else if ((flags & GPIO_OUTPUT_INIT_LOW) != 0U) {
-      sys_write32(BIT(pin + 16), p->BSRR);
-		}
-	} else if ((flags & GPIO_INPUT) != 0U) {
+    if ((flags & GPIO_OUTPUT_INIT_HIGH) != 0U) {
+      WRITE_REG(p->BSRR, BIT(pin_num));
+    } else if ((flags & GPIO_OUTPUT_INIT_LOW) != 0U) {
+      WRITE_REG(p->BSRR, BIT(pin_num + 16));
+    }
+  } else if ((flags & GPIO_INPUT) != 0U) {
     // GPIO mode
-    moder &= ~((0x3) << (pin * 2));
-    sys_write32(moder, p->MODER);
+    moder &= ~((0x3) << (pin_num * 2));
+    WRITE_REG(p->MODER, moder);
 
     // Low speed
-    ospeedr &= ~((0x3) << (pin * 2));
-    sys_write32(ospeedr, p->OSPEEDR);
-	} else { // set mode ANALOG
+    ospeedr &= ~((0x3) << (pin_num * 2));
+    WRITE_REG(p->OSPEEDR, ospeedr);
+  } else { // set mode ANALOG
     // GPIO mode
-    moder |= ((0x3) << (pin * 2));
-    sys_write32(moder, p->MODER);
+    moder |= ((0x3) << (pin_num * 2));
+    WRITE_REG(p->MODER, moder);
 
     // Low speed
-    ospeedr &= ~((0x3) << (pin * 2));
-    sys_write32(ospeedr, p->OSPEEDR);
-	}
+    ospeedr &= ~((0x3) << (pin_num * 2));
+    WRITE_REG(p->OSPEEDR, ospeedr);
+  }
 
   if ((flags & GPIO_OPEN_DRAIN) != 0U) {
-    otyper |= (1 << pin);
+    otyper |= (1 << pin_num);
   } else {
-    otyper &= ~(1 << pin);
+    otyper &= ~(1 << pin_num);
   }
-  sys_write32(otyper, p->OTYPER);
+  WRITE_REG(p->OTYPER, otyper);
 
-	if ((flags & GPIO_PULL_UP) != 0U) {
-		pupdr &= ~(0x3 << (pin * 2));
-		pupdr |= (0x1 << (pin * 2));
-	} else if ((flags & GPIO_PULL_DOWN) != 0U) {
-		pupdr &= ~(0x3 << (pin * 2));
-		pupdr |= (0x2 << (pin * 2));
-	} else {
-		pupdr &= ~(0x3 << (pin * 2));
-	}
+  if ((flags & GPIO_PULL_UP) != 0U) {
+    pupdr &= ~(0x3 << (pin_num * 2));
+    pupdr |= (0x1 << (pin_num * 2));
+  } else if ((flags & GPIO_PULL_DOWN) != 0U) {
+    pupdr &= ~(0x3 << (pin_num * 2));
+    pupdr |= (0x2 << (pin_num * 2));
+  } else {
+    pupdr &= ~(0x3 << (pin_num * 2));
+  }
 
-  sys_write32(pupdr, p->PUPDR);
+  WRITE_REG(p->PUPDR, pupdr);
 
-	return 0;
+  return 0;
 }
 
 int stm32f769_gpio_init(struct device *dev)
 {
   uint32_t clkid = 0;
-  switch (dev->devptr) {
-  case GPIOA:
+  switch ((uint32_t)dev->devptr) {
+  case GPIOA_BASE:
     clkid = STM32F769_CLOCK_GPIOA;
     break;
-  case GPIOB:
+  case GPIOB_BASE:
     clkid = STM32F769_CLOCK_GPIOB;
     break;
-  case GPIOC:
+  case GPIOC_BASE:
     clkid = STM32F769_CLOCK_GPIOC;
     break;
-  case GPIOD:
+  case GPIOD_BASE:
     clkid = STM32F769_CLOCK_GPIOD;
     break;
-  case GPIOE:
+  case GPIOE_BASE:
     clkid = STM32F769_CLOCK_GPIOE;
     break;
-  case GPIOF:
+  case GPIOF_BASE:
     clkid = STM32F769_CLOCK_GPIOF;
     break;
-  case GPIOG:
+  case GPIOG_BASE:
     clkid = STM32F769_CLOCK_GPIOG;
     break;
-  case GPIOH:
+  case GPIOH_BASE:
     clkid = STM32F769_CLOCK_GPIOH;
     break;
-  case GPIOI:
+  case GPIOI_BASE:
     clkid = STM32F769_CLOCK_GPIOI;
     break;
-  case GPIOJ:
+  case GPIOJ_BASE:
     clkid = STM32F769_CLOCK_GPIOJ;
     break;
-  case GPIOK:
+  case GPIOK_BASE:
     clkid = STM32F769_CLOCK_GPIOK;
     break;
+  default:
+    return -1;
   }
 
-	stm32f769_clock_control_on(clkid);
+  stm32f769_clock_control_on(clkid);
 
-	return 0;
+  return 0;
 }
 
 int stm32f769_gpio_read(struct device *dev, uint32_t pin) {
   GPIO_TypeDef *p = dev->devptr;
-  uint32_t state = sys_read32(p->IDR);
+  uint32_t state = READ_REG(p->IDR);
   if (state & BIT(pin)) {
     return 1;
   }
@@ -224,8 +237,8 @@ int stm32f769_gpio_read(struct device *dev, uint32_t pin) {
 void stm32f769_gpio_write(struct device *dev, uint32_t pin, int val) {
   GPIO_TypeDef *p = dev->devptr;
   if (val == 0) {
-    sys_write32(BIT(pin + 16), p->BSRR);
+    WRITE_REG(p->BSRR, BIT(pin + 16));
   } else {
-    sys_write32(BIT(pin), p->BSRR);
+    WRITE_REG(p->BSRR, BIT(pin));
   }
 }
