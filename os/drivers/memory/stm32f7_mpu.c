@@ -38,7 +38,7 @@ int stm32f7_mpu_init(struct device *dev) {
   MPU->RNR = MPU_REGION_NUMBER0;
 
   /* Disable the Region */
-  sys_clear_bit(MPU->RASR, MPU_RASR_ENABLE_Msk);
+  MODIFY_REG(MPU->RASR, MPU_RASR_ENABLE_Msk, 0);
 
   /* Apply configuration */
   MPU->RBAR = 0; // Base addr
