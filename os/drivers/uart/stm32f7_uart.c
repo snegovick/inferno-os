@@ -25,6 +25,7 @@ inline static void __uart_enable(struct device *dev) {
 int stm32f7_uart_init(struct device *dev) {
   USART_TypeDef *p = dev->devptr;
   stm32f7_uart_deinit(dev);
+
   uint32_t clk_rate = 0;
   uint32_t parity = 0;
   uint32_t stop_bits = 0;
@@ -57,6 +58,8 @@ int stm32f7_uart_init(struct device *dev) {
   case UART8_BASE:
     stm32f769_clock_control_get_rate(STM32F769_CLOCK_UART8, &clk_rate);
     break;
+  default:
+    return -1;
   }
 
   switch (uart->data_bits) {
@@ -109,16 +112,16 @@ int stm32f7_uart_init(struct device *dev) {
   }
 
   uint32_t cr1 = word_length | parity | USART_CR1_TE | USART_CR1_RE;
-  sys_write32(cr1, p->CR1);
-  cr1 = sys_read32(p->CR1);
+  WRITE_REG(p->CR1, cr1);
+  cr1 = READ_REG(p->CR1);
 
   uint32_t cr2 = stop_bits;
-  sys_write32(cr2, p->CR2);
-  cr2 = sys_read32(p->CR2);
+  WRITE_REG(p->CR2, cr2);
+  cr2 = READ_REG(p->CR2);
 
   uint32_t cr3 = 0;
-  sys_write32(cr3, p->CR3);
-  cr3 = sys_read32(p->CR3);
+  WRITE_REG(p->CR3, cr3);
+  cr3 = READ_REG(p->CR3);
 
   uint32_t div = (clk_rate + ((uart->baudrate)/2U)) / (uart->baudrate);
   if ((div >= UART_BRR_MIN) && (div <= UART_BRR_MAX)) {
@@ -127,10 +130,10 @@ int stm32f7_uart_init(struct device *dev) {
     return -1;
   }
 
-  sys_clear_bits(p->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN));
-  sys_clear_bits(p->CR3, (USART_CR3_SCEN | USART_CR3_HDSEL | USART_CR3_IREN));
+  CLEAR_BIT(p->CR2, (USART_CR2_LINEN | USART_CR2_CLKEN));
+  CLEAR_BIT(p->CR3, (USART_CR3_SCEN | USART_CR3_HDSEL | USART_CR3_IREN));
 
-  stm32f7_uart_init(dev);
+  __uart_enable(dev);
   return 0;
 }
 
