@@ -56,7 +56,7 @@
    application
   */
 #if !defined (STM32F756xx) && !defined (STM32F746xx) && !defined (STM32F745xx) && !defined (STM32F765xx) && \
-    !defined (STM32F767xx) && !defined (STM32F769xx) && !defined (STM32F777xx) && !defined (STM32F779xx) && \
+    !defined (STM32F767xx) && !defined (CONFIG_ARCH_CPU_STM32F769) && !defined (STM32F777xx) && !defined (STM32F779xx) && \
     !defined (STM32F722xx) && !defined (STM32F723xx) && !defined (STM32F732xx) && !defined (STM32F733xx) && \
     !defined (STM32F730xx) && !defined (STM32F750xx)
 
@@ -69,7 +69,7 @@
                                    STM32F765ZI, STM32F765ZG, STM32F765VI, STM32F765VG Devices */
   /* #define STM32F767xx */   /*!< STM32F767BG, STM32F767BI, STM32F767IG, STM32F767II, STM32F767NG, STM32F767NI,
                                    STM32F767VG, STM32F767VI, STM32F767ZG, STM32F767ZI Devices */
-  /* #define STM32F769xx */   /*!< STM32F769AG, STM32F769AI, STM32F769BG, STM32F769BI, STM32F769IG, STM32F769II,
+  /* #define CONFIG_ARCH_CPU_STM32F769 */   /*!< STM32F769AG, STM32F769AI, STM32F769BG, STM32F769BI, STM32F769IG, STM32F769II,
                                    STM32F769NG, STM32F769NI, STM32F768AI Devices */
   /* #define STM32F777xx */   /*!< STM32F777VI, STM32F777ZI, STM32F777II, STM32F777BI, STM32F777NI Devices */
   /* #define STM32F779xx */   /*!< STM32F779II, STM32F779BI, STM32F779NI, STM32F779AI, STM32F778AI Devices */
@@ -131,7 +131,7 @@
   #include "stm32f765xx.h"
 #elif defined(STM32F767xx)
   #include "stm32f767xx.h"
-#elif defined(STM32F769xx)
+#elif defined(CONFIG_ARCH_CPU_STM32F769)
   #include "stm32f769xx.h"
 #elif defined(STM32F777xx)
   #include "stm32f777xx.h"

@@ -2,6 +2,7 @@
 #define __STM32F769_CLOCK_CONTROL_H__
 
 #include <stdint.h>
+#include <drivers/include/device.h>
 
 int stm32f769_clock_control_on(uint16_t id);
 int stm32f769_clock_control_off(uint16_t id);

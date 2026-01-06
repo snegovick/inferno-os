@@ -182,7 +182,7 @@ typedef enum
 #define __FPU_PRESENT             1U       /*!< FPU present                                   */
 #define __ICACHE_PRESENT          1U       /*!< CM7 instruction cache present                 */
 #define __DCACHE_PRESENT          1U       /*!< CM7 data cache present                        */
-#include "core_cm7.h"                      /*!< Cortex-M7 processor and core peripherals      */
+#include <arch/aarch32/armv7e_m/cmsis/core_cm7.h>  /*!< Cortex-M7 processor and core peripherals      */
 
 
 #include "system_stm32f7xx.h"

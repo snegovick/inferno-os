@@ -24,11 +24,11 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f7xx_hal_def.h"
+//#include "stm32f7xx_hal_def.h"
    
 /* Include RCC HAL Extended module */
 /* (include on top of file since RCC structures are defined in extended file) */
-#include "stm32f7xx_hal_rcc_ex.h"   
+#include "stm32f769_rcc_ex.h"   
 
 /** @addtogroup STM32F7xx_HAL_Driver
   * @{
@@ -880,8 +880,8 @@ typedef struct
   * @note   The main PLL can not be disabled if it is used as system clock source
   * @note   The main PLL is disabled by hardware when entering STOP and STANDBY modes.
   */
-#define __HAL_RCC_PLL_ENABLE() SET_BIT(RCC->CR, RCC_CR_PLLON)
-#define __HAL_RCC_PLL_DISABLE() CLEAR_BIT(RCC->CR, RCC_CR_PLLON)
+#define __HAL_RCC_PLL_ENABLE() sys_set_bit(RCC->CR, RCC_CR_PLLON)
+#define __HAL_RCC_PLL_DISABLE() sys_clear_bit(RCC->CR, RCC_CR_PLLON)
                             
 /** @brief  Macro to configure the PLL clock source.
   * @note   This function must be used only when the main PLL is disabled.
@@ -1121,7 +1121,7 @@ typedef struct
   */
 
 /* Include RCC HAL Extension module */
-#include "stm32f7xx_hal_rcc_ex.h"
+#include "stm32f769_rcc_ex.h"
 
 /* Exported functions --------------------------------------------------------*/
  /** @addtogroup RCC_Exported_Functions
@@ -1132,9 +1132,9 @@ typedef struct
   * @{
   */                             
 /* Initialization and de-initialization functions  ******************************/
-HAL_StatusTypeDef HAL_RCC_DeInit(void);
-HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef *RCC_OscInitStruct);
-HAL_StatusTypeDef HAL_RCC_ClockConfig(const RCC_ClkInitTypeDef *RCC_ClkInitStruct, uint32_t FLatency);
+/* HAL_StatusTypeDef HAL_RCC_DeInit(void); */
+/* HAL_StatusTypeDef HAL_RCC_OscConfig(const RCC_OscInitTypeDef *RCC_OscInitStruct); */
+/* HAL_StatusTypeDef HAL_RCC_ClockConfig(const RCC_ClkInitTypeDef *RCC_ClkInitStruct, uint32_t FLatency); */
 /**
   * @}
   */

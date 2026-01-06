@@ -1,8 +1,10 @@
 #include <stdint.h>
 #include "stm32f7_mpu.h"
+#include <arch/aarch32/armv7e_m/stm32f7/stm32f769xx.h>
+#include <arch/sys_io.h>
+#include <arch/aarch32/armv7e_m/stm32f769/cortex.h>
 #include <drivers/include/device.h>
-#include <arch/aarch32/stm32f7/stm32f769xx.h>
-#include <arch/aarch32/core_cm7.h>
+#include <arch/aarch32/armv7e_m/cmsis/core_cm7.h>
 
 static void __mpu_disable(void)
 {
@@ -36,7 +38,7 @@ int stm32f7_mpu_init(struct device *dev) {
   MPU->RNR = MPU_REGION_NUMBER0;
 
   /* Disable the Region */
-  CLEAR_BIT(MPU->RASR, MPU_RASR_ENABLE_Msk);
+  sys_clear_bit(MPU->RASR, MPU_RASR_ENABLE_Msk);
 
   /* Apply configuration */
   MPU->RBAR = 0; // Base addr

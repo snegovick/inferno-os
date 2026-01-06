@@ -44,6 +44,7 @@
   * @{
   */
 
+#include <config.h>
 #include "stm32f7xx.h"
 
 #if !defined  (HSE_VALUE) 

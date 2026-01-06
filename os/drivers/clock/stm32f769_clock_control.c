@@ -1,6 +1,9 @@
 #include <arch/sys_io.h>
-#include "stm32f769_clock_control.h"
+#include <arch/aarch32/armv7e_m/stm32f7/stm32f769xx.h>
 #include <stdint.h>
+
+#include "stm32f769_clock_control.h"
+#include "stm32f769_rcc.h"
 
 #include "errno.h"
 #include "stm32f769_clocks.h"
@@ -110,43 +113,39 @@ int stm32f769_clock_control_get_rate(uint16_t id, uint32_t *rate)
 #define RCC_FLAG_MASK  ((uint8_t)0x1F)
 #define __HAL_RCC_GET_FLAG(__FLAG__) (((((((__FLAG__) >> 5) == 1)? RCC->CR :((((__FLAG__) >> 5) == 2) ? RCC->BDCR :((((__FLAG__) >> 5) == 3)? RCC->CSR :RCC->CIR))) & ((uint32_t)1 << ((__FLAG__) & RCC_FLAG_MASK)))!= 0)? 1 : 0)
 
-#define __HAL_RCC_PLL_CONFIG(__RCC_PLLSource__, __PLLM__, __PLLN__, __PLLP__, __PLLQ__,__PLLR__) \
-  (RCC->PLLCFGR = ((__RCC_PLLSource__) | (__PLLM__)                   | \
-                   ((__PLLN__) << RCC_PLLCFGR_PLLN_Pos)                      | \
-                   ((((__PLLP__) >> 1) -1) << RCC_PLLCFGR_PLLP_Pos)          | \
-                   ((__PLLQ__) << RCC_PLLCFGR_PLLQ_Pos)                      | \
-                   ((__PLLR__) << RCC_PLLCFGR_PLLR_Pos)))
-
-#define __HAL_RCC_PLL_ENABLE() SET_BIT(RCC->CR, RCC_CR_PLLON)
-#define __HAL_RCC_PLL_DISABLE() CLEAR_BIT(RCC->CR, RCC_CR_PLLON)
+/* #define __HAL_RCC_PLL_CONFIG(__RCC_PLLSource__, __PLLM__, __PLLN__, __PLLP__, __PLLQ__,__PLLR__) \ */
+/*   (RCC->PLLCFGR = ((__RCC_PLLSource__) | (__PLLM__)                   | \ */
+/*                    ((__PLLN__) << RCC_PLLCFGR_PLLN_Pos)                      | \ */
+/*                    ((((__PLLP__) >> 1) -1) << RCC_PLLCFGR_PLLP_Pos)          | \ */
+/*                    ((__PLLQ__) << RCC_PLLCFGR_PLLQ_Pos)                      | \ */
+/*                    ((__PLLR__) << RCC_PLLCFGR_PLLR_Pos))) */
 
 #define HSE_STARTUP_TIMEOUT    100U   /*!< Time out for HSE start up, in ms */
-#define PLL_TIMEOUT_VALUE 2
+//#define PLL_TIMEOUT_VALUE 2
 
 int stm32f769_clock_control_init(struct device *dev)
 {
   uint32_t tickstart;
   uint32_t pll_config;
-  FlagStatus pwrclkchanged = RESET;
 
   if ((__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_SYSCLKSOURCE_STATUS_HSE) || ((__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_SYSCLKSOURCE_STATUS_PLLCLK) && ((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLCFGR_PLLSRC_HSE))) {
-    if ((__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) != RESET) && (RCC_OscInitStruct->HSEState == RCC_HSE_OFF)) {
+    if ((__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) != 0)) {// && (RCC_OscInitStruct->HSEState == RCC_HSE_OFF)) {
       return -1;
     }
   } else {
 
 #if defined(CONFIG_BOARD_HSE_CLK)
 #if CONFIG_BOARD_HSE_BYP == 1
-    SET_BIT(RCC->CR, RCC_CR_HSEBYP);
-    SET_BIT(RCC->CR, RCC_CR_HSEON);
+    sys_set_bit(RCC->CR, RCC_CR_HSEBYP);
+    sys_set_bit(RCC->CR, RCC_CR_HSEON);
 #else
-    SET_BIT(RCC->CR, RCC_CR_HSEON);
+    sys_set_bit(RCC->CR, RCC_CR_HSEON);
 #endif
     /* Get Start Tick*/
     tickstart = uptime_ctr;
 
     /* Wait till HSE is ready */
-    while (__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) == RESET) {
+    while (__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) == 0) {
       if ((uptime_ctr - tickstart) > HSE_STARTUP_TIMEOUT) {
         return -1;
       }
@@ -164,8 +163,8 @@ int stm32f769_clock_control_init(struct device *dev)
     tickstart = uptime_ctr;
 
     /* Wait till PLL is ready */
-    while (__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) != RESET) {
-      if ((HAL_GetTick() - tickstart) > PLL_TIMEOUT_VALUE) {
+    while (__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) != 0) {
+      if ((uptime_ctr - tickstart) > PLL_TIMEOUT_VALUE) {
         return -1;
       }
     }
@@ -180,8 +179,8 @@ int stm32f769_clock_control_init(struct device *dev)
     tickstart = uptime_ctr;
 
     /* Wait till PLL is ready */
-    while (__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) == RESET) {
-      if ((HAL_GetTick() - tickstart) > PLL_TIMEOUT_VALUE) {
+    while (__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) == 0) {
+      if ((uptime_ctr - tickstart) > PLL_TIMEOUT_VALUE) {
         return -1;
       }
     }

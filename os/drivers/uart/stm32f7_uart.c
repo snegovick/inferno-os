@@ -1,3 +1,12 @@
+#include <arch/aarch32/armv7e_m/stm32f7/stm32f769xx.h>
+#include <arch/sys_io.h>
+
+#include <drivers/clock/stm32f769_clocks.h>
+#include <drivers/clock/stm32f769_clock_control.h>
+
+#include <string.h>
+
+#include "uart.h"
 #include "stm32f7_uart.h"
 
 #define UART_BRR_MIN    0x10U        /* UART BRR minimum authorized value */
@@ -21,29 +30,31 @@ int stm32f7_uart_init(struct device *dev) {
   uint32_t stop_bits = 0;
   uint32_t word_length = 0;
 
-  switch (p) {
-  case USART1:
+  struct uart_data *uart = (struct uart_data *)dev->data;
+
+  switch ((uint32_t)p) {
+  case USART1_BASE:
     stm32f769_clock_control_get_rate(STM32F769_CLOCK_USART1, &clk_rate);
     break;
-  case USART2:
+  case USART2_BASE:
     stm32f769_clock_control_get_rate(STM32F769_CLOCK_USART2, &clk_rate);
     break;
-  case USART3:
+  case USART3_BASE:
     stm32f769_clock_control_get_rate(STM32F769_CLOCK_USART3, &clk_rate);
     break;
-  case UART4:
+  case UART4_BASE:
     stm32f769_clock_control_get_rate(STM32F769_CLOCK_UART4, &clk_rate);
     break;
-  case UART5:
+  case UART5_BASE:
     stm32f769_clock_control_get_rate(STM32F769_CLOCK_UART5, &clk_rate);
     break;
-  case USART6:
+  case USART6_BASE:
     stm32f769_clock_control_get_rate(STM32F769_CLOCK_USART6, &clk_rate);
     break;
-  case UART7:
+  case UART7_BASE:
     stm32f769_clock_control_get_rate(STM32F769_CLOCK_UART7, &clk_rate);
     break;
-  case UART8:
+  case UART8_BASE:
     stm32f769_clock_control_get_rate(STM32F769_CLOCK_UART8, &clk_rate);
     break;
   }
@@ -98,16 +109,16 @@ int stm32f7_uart_init(struct device *dev) {
   }
 
   uint32_t cr1 = word_length | parity | USART_CR1_TE | USART_CR1_RE;
-  sys_io_write32(cr1, p->CR1);
-  cr1 = sys_io_read32(p->CR1);
+  sys_write32(cr1, p->CR1);
+  cr1 = sys_read32(p->CR1);
 
   uint32_t cr2 = stop_bits;
-  sys_io_write32(cr2, p->CR2);
-  cr2 = sys_io_read32(p->CR2);
+  sys_write32(cr2, p->CR2);
+  cr2 = sys_read32(p->CR2);
 
   uint32_t cr3 = 0;
-  sys_io_write32(cr3, p->CR3);
-  cr3 = sys_io_read32(p->CR3);
+  sys_write32(cr3, p->CR3);
+  cr3 = sys_read32(p->CR3);
 
   uint32_t div = (clk_rate + ((uart->baudrate)/2U)) / (uart->baudrate);
   if ((div >= UART_BRR_MIN) && (div <= UART_BRR_MAX)) {
@@ -129,13 +140,14 @@ int stm32f7_uart_deinit(struct device *dev) {
   p->CR1 = 0x0U;
   p->CR2 = 0x0U;
   p->CR3 = 0x0U;
+  return 0;
 }
 
 void stm32f7_uart_poll_out8(const struct device *dev, unsigned char ch)
 {
   USART_TypeDef *p = dev->devptr;
 
-  while ((p->ISR & UART_ISR_TXE) == 0) {
+  while ((p->ISR & USART_ISR_TXE) == 0) {
   }
 
   p->TDR = ch;
@@ -144,7 +156,7 @@ void stm32f7_uart_poll_out8(const struct device *dev, unsigned char ch)
 void stm32f7_uart_tx_buffer(const struct device *dev, char *buffer, unsigned int len) {
   unsigned int i = 0;
   for (;i < len; i++) {
-    usart_mik32_poll_out(dev, buffer[i]);
+    stm32f7_uart_poll_out8(dev, buffer[i]);
   }
 }
 

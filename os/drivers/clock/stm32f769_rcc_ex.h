@@ -24,7 +24,7 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f7xx_hal_def.h"
+//#include "stm32f7xx_hal_def.h"
 
 /** @addtogroup STM32F7xx_HAL_Driver
   * @{
@@ -61,7 +61,7 @@ typedef struct
 
   uint32_t PLLQ;       /*!< PLLQ: Division factor for OTG FS, SDMMC and RNG clocks.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 15    */
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
   uint32_t PLLR;       /*!< PLLR: Division factor for DSI clock.
                             This parameter must be a number between Min_Data = 2 and Max_Data = 7    */
 #endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
@@ -86,7 +86,7 @@ typedef struct
                             This parameter will be used only when PLLI2S is selected as Clock Source SAI */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || defined (STM32F767xx) || \
-    defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+    defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
   uint32_t PLLI2SP;    /*!< Specifies the division factor for SPDIF-RX clock.
                             This parameter must be a value of @ref RCCEx_PLLI2SP_Clock_Divider.
                             This parameter will be used only when PLLI2S is selected as Clock Source SPDIF-RX */
@@ -107,7 +107,7 @@ typedef struct
                             This parameter will be used only when PLLSAI is selected as Clock Source SAI or LTDC */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || defined (STM32F767xx) || \
-    defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+    defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
   uint32_t PLLSAIR;    /*!< specifies the division factor for LTDC clock
                             This parameter must be a number between Min_Data = 2 and Max_Data = 7.
                             This parameter will be used only when PLLSAI is selected as Clock Source LTDC */
@@ -207,12 +207,12 @@ typedef struct
                                         This parameter can be a value of @ref RCCEx_SDMMC1_Clock_Source */
 
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
   uint32_t Sdmmc2ClockSelection;     /*!< SDMMC2 clock source
                                         This parameter can be a value of @ref RCCEx_SDMMC2_Clock_Source */
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
 
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
   uint32_t Dfsdm1ClockSelection;     /*!< DFSDM1 clock source
                                         This parameter can be a value of @ref RCCEx_DFSDM1_Kernel_Clock_Source */
 
@@ -233,7 +233,7 @@ typedef struct
   * @{
   */
 #define RCC_PERIPHCLK_I2S             ((uint32_t)0x00000001U)
-#if defined(STM32F746xx) || defined(STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+#if defined(STM32F746xx) || defined(STM32F756xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 #define RCC_PERIPHCLK_LTDC            ((uint32_t)0x00000008U)
 #endif /* STM32F746xx || STM32F756xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
 #define RCC_PERIPHCLK_TIM             ((uint32_t)0x00000010U)
@@ -259,10 +259,10 @@ typedef struct
 #define RCC_PERIPHCLK_SPDIFRX         ((uint32_t)0x01000000U)
 #define RCC_PERIPHCLK_PLLI2S          ((uint32_t)0x02000000U)
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define RCC_PERIPHCLK_SDMMC2          ((uint32_t)0x04000000U)
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define RCC_PERIPHCLK_DFSDM1           ((uint32_t)0x08000000U)
 #define RCC_PERIPHCLK_DFSDM1_AUDIO     ((uint32_t)0x10000000U)
 #endif /* STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
@@ -272,7 +272,7 @@ typedef struct
   */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || defined (STM32F767xx) || \
-    defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+    defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 /** @defgroup RCCEx_PLLI2SP_Clock_Divider RCCEx PLLI2SP Clock Divider
   * @{
   */
@@ -323,7 +323,7 @@ typedef struct
 #define RCC_SAI1CLKSOURCE_PLLSAI             ((uint32_t)0x00000000U)
 #define RCC_SAI1CLKSOURCE_PLLI2S             RCC_DCKCFGR1_SAI1SEL_0
 #define RCC_SAI1CLKSOURCE_PIN                RCC_DCKCFGR1_SAI1SEL_1
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define RCC_SAI1CLKSOURCE_PLLSRC             RCC_DCKCFGR1_SAI1SEL
 #endif /* STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
 /**
@@ -336,7 +336,7 @@ typedef struct
 #define RCC_SAI2CLKSOURCE_PLLSAI             ((uint32_t)0x00000000U)
 #define RCC_SAI2CLKSOURCE_PLLI2S             RCC_DCKCFGR1_SAI2SEL_0
 #define RCC_SAI2CLKSOURCE_PIN                RCC_DCKCFGR1_SAI2SEL_1
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define RCC_SAI2CLKSOURCE_PLLSRC             RCC_DCKCFGR1_SAI2SEL
 #endif /* STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
 /**
@@ -521,7 +521,7 @@ typedef struct
   */
 
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 /** @defgroup RCCEx_SDMMC2_Clock_Source RCCEx SDMMC2 Clock Source
   * @{
   */
@@ -532,7 +532,7 @@ typedef struct
   */
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
 
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 /** @defgroup RCCEx_DFSDM1_Kernel_Clock_Source  RCCEx DFSDM1 Kernel Clock Source
   * @{
   */
@@ -550,9 +550,9 @@ typedef struct
 /**
   * @}
   */
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 
-#if defined (STM32F769xx) || defined (STM32F779xx)
+#if defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F779xx)
 /** @defgroup RCCEx_DSI_Clock_Source  RCC DSI Clock Source
   * @{
   */
@@ -561,7 +561,7 @@ typedef struct
 /**
   * @}
   */
-#endif /* STM32F769xx || STM32F779xx */
+#endif /* CONFIG_ARCH_CPU_STM32F769 || STM32F779xx */
 
 /**
   * @}
@@ -697,7 +697,7 @@ typedef struct
                                       } while(0)
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_GPIOJ_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -722,7 +722,7 @@ typedef struct
                                         tmpreg = READ_BIT(RCC->AHB1ENR, RCC_AHB1ENR_DMA2DEN);\
                                         UNUSED(tmpreg); \
                                       } while(0)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #define __HAL_RCC_BKPSRAM_CLK_DISABLE()         (RCC->AHB1ENR &= ~(RCC_AHB1ENR_BKPSRAMEN))
 #define __HAL_RCC_DTCMRAMEN_CLK_DISABLE()       (RCC->AHB1ENR &= ~(RCC_AHB1ENR_DTCMRAMEN))
@@ -739,15 +739,15 @@ typedef struct
 #define __HAL_RCC_GPIOH_CLK_DISABLE()           (RCC->AHB1ENR &= ~(RCC_AHB1ENR_GPIOHEN))
 #define __HAL_RCC_GPIOI_CLK_DISABLE()           (RCC->AHB1ENR &= ~(RCC_AHB1ENR_GPIOIEN))
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_GPIOJ_CLK_DISABLE()           (RCC->AHB1ENR &= ~(RCC_AHB1ENR_GPIOJEN))
 #define __HAL_RCC_GPIOK_CLK_DISABLE()           (RCC->AHB1ENR &= ~(RCC_AHB1ENR_GPIOKEN))
 #define __HAL_RCC_DMA2D_CLK_DISABLE()           (RCC->AHB1ENR &= ~(RCC_AHB1ENR_DMA2DEN))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 /**
   * @brief  Enable ETHERNET clock.
@@ -801,7 +801,7 @@ typedef struct
                                       __HAL_RCC_ETHMACRX_CLK_DISABLE();    \
                                       __HAL_RCC_ETHMAC_CLK_DISABLE();      \
                                      } while(0)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 /** @brief  Enable or disable the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
@@ -809,7 +809,7 @@ typedef struct
   *         using it.
   */
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DCMI_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -819,9 +819,9 @@ typedef struct
                                         UNUSED(tmpreg); \
                                       } while(0)
 #define __HAL_RCC_DCMI_CLK_DISABLE()  (RCC->AHB2ENR &= ~(RCC_AHB2ENR_DCMIEN))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
-#if defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_JPEG_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
                                         SET_BIT(RCC->AHB2ENR, RCC_AHB2ENR_JPEGEN);\
@@ -830,7 +830,7 @@ typedef struct
                                         UNUSED(tmpreg); \
                                       } while(0)
 #define __HAL_RCC_JPEG_CLK_DISABLE()  (RCC->AHB2ENR &= ~(RCC_AHB2ENR_JPEGEN))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 
 #define __HAL_RCC_RNG_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -995,7 +995,7 @@ typedef struct
                                       } while(0)
 
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) ||\
-    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) ||\
+    defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) ||\
     defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_RTC_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -1005,9 +1005,9 @@ typedef struct
                                         UNUSED(tmpreg); \
                                       } while(0)
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx ||
-          STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
+          CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
 
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_CAN3_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
                                         SET_BIT(RCC->APB1ENR, RCC_APB1ENR_CAN3EN);\
@@ -1015,7 +1015,7 @@ typedef struct
                                         tmpreg = READ_BIT(RCC->APB1ENR, RCC_APB1ENR_CAN3EN);\
                                         UNUSED(tmpreg); \
                                       } while(0)
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 
 #define __HAL_RCC_SPI2_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -1122,7 +1122,7 @@ typedef struct
                                       } while(0)
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPDIFRX_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -1155,7 +1155,7 @@ typedef struct
                                         tmpreg = READ_BIT(RCC->APB1ENR, RCC_APB1ENR_CECEN);\
                                         UNUSED(tmpreg); \
                                       } while(0)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #define __HAL_RCC_TIM2_CLK_DISABLE()   (RCC->APB1ENR &= ~(RCC_APB1ENR_TIM2EN))
 #define __HAL_RCC_TIM3_CLK_DISABLE()   (RCC->APB1ENR &= ~(RCC_APB1ENR_TIM3EN))
@@ -1168,14 +1168,14 @@ typedef struct
 #define __HAL_RCC_TIM14_CLK_DISABLE()  (RCC->APB1ENR &= ~(RCC_APB1ENR_TIM14EN))
 #define __HAL_RCC_LPTIM1_CLK_DISABLE() (RCC->APB1ENR &= ~(RCC_APB1ENR_LPTIM1EN))
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) ||\
-    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) ||\
+    defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) ||\
     defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_RTC_CLK_DISABLE()    (RCC->APB1ENR &= ~(RCC_APB1ENR_RTCEN))
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx ||
-          STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+          CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_CAN3_CLK_DISABLE()   (RCC->APB1ENR &= ~(RCC_APB1ENR_CAN3EN))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #define __HAL_RCC_SPI2_CLK_DISABLE()   (RCC->APB1ENR &= ~(RCC_APB1ENR_SPI2EN))
 #define __HAL_RCC_SPI3_CLK_DISABLE()   (RCC->APB1ENR &= ~(RCC_APB1ENR_SPI3EN))
 #define __HAL_RCC_USART2_CLK_DISABLE() (RCC->APB1ENR &= ~(RCC_APB1ENR_USART2EN))
@@ -1190,13 +1190,13 @@ typedef struct
 #define __HAL_RCC_UART7_CLK_DISABLE()  (RCC->APB1ENR &= ~(RCC_APB1ENR_UART7EN))
 #define __HAL_RCC_UART8_CLK_DISABLE()  (RCC->APB1ENR &= ~(RCC_APB1ENR_UART8EN))
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPDIFRX_CLK_DISABLE()(RCC->APB1ENR &= ~(RCC_APB1ENR_SPDIFRXEN))
 #define __HAL_RCC_I2C4_CLK_DISABLE()   (RCC->APB1ENR &= ~(RCC_APB1ENR_I2C4EN))
 #define __HAL_RCC_CAN2_CLK_DISABLE()   (RCC->APB1ENR &= ~(RCC_APB1ENR_CAN2EN))
 #define __HAL_RCC_CEC_CLK_DISABLE()    (RCC->APB1ENR &= ~(RCC_APB1ENR_CECEN))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || || STM32F750xx */
 
 /** @brief  Enable or disable the High Speed APB (APB2) peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
@@ -1236,7 +1236,7 @@ typedef struct
                                       } while(0)
 
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
                                         SET_BIT(RCC->APB2ENR, RCC_APB2ENR_SDMMC2EN);\
@@ -1244,7 +1244,7 @@ typedef struct
                                         tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_SDMMC2EN);\
                                         UNUSED(tmpreg); \
                                       } while(0)
-#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || || STM32F730xx */
+#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || || STM32F730xx */
 
 #define __HAL_RCC_ADC1_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -1327,7 +1327,7 @@ typedef struct
                                       } while(0)
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPI6_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -1336,7 +1336,7 @@ typedef struct
                                         tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_SPI6EN);\
                                         UNUSED(tmpreg); \
                                       } while(0)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #define __HAL_RCC_SAI1_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -1354,7 +1354,7 @@ typedef struct
                                         UNUSED(tmpreg); \
                                       } while(0)
 
-#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 #define __HAL_RCC_LTDC_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
                                         SET_BIT(RCC->APB2ENR, RCC_APB2ENR_LTDCEN);\
@@ -1362,9 +1362,9 @@ typedef struct
                                         tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_LTDCEN);\
                                         UNUSED(tmpreg); \
                                       } while(0)
-#endif /* STM32F746xx || STM32F756xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F746xx || STM32F756xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
-#if defined (STM32F769xx) || defined (STM32F779xx)
+#if defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F779xx)
 #define __HAL_RCC_DSI_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
                                         SET_BIT(RCC->APB2ENR, RCC_APB2ENR_DSIEN);\
@@ -1372,9 +1372,9 @@ typedef struct
                                         tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_DSIEN);\
                                         UNUSED(tmpreg); \
                                       } while(0)
-#endif /* STM32F769xx || STM32F779xx */
+#endif /* CONFIG_ARCH_CPU_STM32F769 || STM32F779xx */
 
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_DFSDM1_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
                                         SET_BIT(RCC->APB2ENR, RCC_APB2ENR_DFSDM1EN);\
@@ -1390,7 +1390,7 @@ typedef struct
                                         tmpreg = READ_BIT(RCC->APB2ENR, RCC_APB2ENR_MDIOEN);\
                                         UNUSED(tmpreg); \
                                       } while(0)
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #if defined (STM32F723xx) || defined (STM32F733xx) || defined (STM32F730xx)
 #define __HAL_RCC_OTGPHYC_CLK_ENABLE()   do { \
                                         __IO uint32_t tmpreg; \
@@ -1406,9 +1406,9 @@ typedef struct
 #define __HAL_RCC_USART1_CLK_DISABLE() (RCC->APB2ENR &= ~(RCC_APB2ENR_USART1EN))
 #define __HAL_RCC_USART6_CLK_DISABLE() (RCC->APB2ENR &= ~(RCC_APB2ENR_USART6EN))
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_CLK_DISABLE() (RCC->APB2ENR &= ~(RCC_APB2ENR_SDMMC2EN))
-#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
+#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
 #define __HAL_RCC_ADC1_CLK_DISABLE()   (RCC->APB2ENR &= ~(RCC_APB2ENR_ADC1EN))
 #define __HAL_RCC_ADC2_CLK_DISABLE()   (RCC->APB2ENR &= ~(RCC_APB2ENR_ADC2EN))
 #define __HAL_RCC_ADC3_CLK_DISABLE()   (RCC->APB2ENR &= ~(RCC_APB2ENR_ADC3EN))
@@ -1421,23 +1421,23 @@ typedef struct
 #define __HAL_RCC_SPI5_CLK_DISABLE()   (RCC->APB2ENR &= ~(RCC_APB2ENR_SPI5EN))
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPI6_CLK_DISABLE()   (RCC->APB2ENR &= ~(RCC_APB2ENR_SPI6EN))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #define __HAL_RCC_SAI1_CLK_DISABLE()   (RCC->APB2ENR &= ~(RCC_APB2ENR_SAI1EN))
 #define __HAL_RCC_SAI2_CLK_DISABLE()   (RCC->APB2ENR &= ~(RCC_APB2ENR_SAI2EN))
-#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 #define __HAL_RCC_LTDC_CLK_DISABLE()   (RCC->APB2ENR &= ~(RCC_APB2ENR_LTDCEN))
-#endif /* STM32F746xx || STM32F756xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
-#if defined (STM32F769xx) || defined (STM32F779xx)
+#endif /* STM32F746xx || STM32F756xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
+#if defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F779xx)
 #define __HAL_RCC_DSI_CLK_DISABLE()    (RCC->APB2ENR &= ~(RCC_APB2ENR_DSIEN))
-#endif /* STM32F769xx || STM32F779xx */
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#endif /* CONFIG_ARCH_CPU_STM32F769 || STM32F779xx */
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_DFSDM1_CLK_DISABLE() (RCC->APB2ENR &= ~(RCC_APB2ENR_DFSDM1EN))
 #define __HAL_RCC_MDIO_CLK_DISABLE()   (RCC->APB2ENR &= ~(RCC_APB2ENR_MDIOEN))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #if defined (STM32F723xx) || defined (STM32F733xx) || defined (STM32F730xx)
 #define __HAL_RCC_OTGPHYC_CLK_DISABLE() (RCC->APB2ENR &= ~(RCC_APB2ENR_OTGPHYCEN))
 #endif /* STM32F723xx || STM32F733xx || STM32F730xx */
@@ -1474,12 +1474,12 @@ typedef struct
 #define __HAL_RCC_GPIOH_IS_CLK_ENABLED()            ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOHEN)) != RESET)
 #define __HAL_RCC_GPIOI_IS_CLK_ENABLED()            ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOIEN)) != RESET)
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_GPIOJ_IS_CLK_ENABLED()            ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOJEN)) != RESET)
 #define __HAL_RCC_GPIOK_IS_CLK_ENABLED()            ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOKEN)) != RESET)
 #define __HAL_RCC_DMA2D_IS_CLK_ENABLED()            ((RCC->AHB1ENR & (RCC_AHB1ENR_DMA2DEN)) != RESET)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #define __HAL_RCC_BKPSRAM_IS_CLK_DISABLED()         ((RCC->AHB1ENR & (RCC_AHB1ENR_BKPSRAMEN)) == RESET)
 #define __HAL_RCC_DTCMRAMEN_IS_CLK_DISABLED()       ((RCC->AHB1ENR & (RCC_AHB1ENR_DTCMRAMEN)) == RESET)
@@ -1496,15 +1496,15 @@ typedef struct
 #define __HAL_RCC_GPIOH_IS_CLK_DISABLED()           ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOHEN)) == RESET)
 #define __HAL_RCC_GPIOI_IS_CLK_DISABLED()           ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOIEN)) == RESET)
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_GPIOJ_IS_CLK_DISABLED()           ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOJEN)) == RESET)
 #define __HAL_RCC_GPIOK_IS_CLK_DISABLED()           ((RCC->AHB1ENR & (RCC_AHB1ENR_GPIOKEN)) == RESET)
 #define __HAL_RCC_DMA2D_IS_CLK_DISABLED()           ((RCC->AHB1ENR & (RCC_AHB1ENR_DMA2DEN)) == RESET)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 /**
   * @brief  Enable ETHERNET clock.
@@ -1527,7 +1527,7 @@ typedef struct
 #define __HAL_RCC_ETH_IS_CLK_DISABLED()        (__HAL_RCC_ETHMAC_IS_CLK_DISABLED()   && \
                                                 __HAL_RCC_ETHMACTX_IS_CLK_DISABLED() && \
                                                 __HAL_RCC_ETHMACRX_IS_CLK_DISABLED())
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 /** @brief  Get the enable or disable status of the AHB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
@@ -1553,16 +1553,16 @@ typedef struct
 #endif /* STM32F732xx || STM32F733xx || STM32F730xx */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DCMI_IS_CLK_ENABLED()        ((RCC->AHB2ENR & (RCC_AHB2ENR_DCMIEN)) != RESET)
 #define __HAL_RCC_DCMI_IS_CLK_DISABLED()       ((RCC->AHB2ENR & (RCC_AHB2ENR_DCMIEN)) == RESET)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
-#if defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_JPEG_IS_CLK_ENABLED()        ((RCC->AHB2ENR & (RCC_AHB2ENR_JPEGEN)) != RESET)
 #define __HAL_RCC_JPEG_IS_CLK_DISABLED()       ((RCC->AHB2ENR & (RCC_AHB2ENR_JPEGEN)) == RESET)
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 
 /** @brief  Get the enable or disable status of the AHB3 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
@@ -1590,9 +1590,9 @@ typedef struct
 #define __HAL_RCC_TIM13_IS_CLK_ENABLED()   ((RCC->APB1ENR & (RCC_APB1ENR_TIM13EN)) != RESET)
 #define __HAL_RCC_TIM14_IS_CLK_ENABLED()   ((RCC->APB1ENR & (RCC_APB1ENR_TIM14EN)) != RESET)
 #define __HAL_RCC_LPTIM1_IS_CLK_ENABLED()  ((RCC->APB1ENR & (RCC_APB1ENR_LPTIM1EN)) != RESET)
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_CAN3_IS_CLK_ENABLED()    ((RCC->APB1ENR & (RCC_APB1ENR_CAN3EN)) != RESET)
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #define __HAL_RCC_SPI2_IS_CLK_ENABLED()    ((RCC->APB1ENR & (RCC_APB1ENR_SPI2EN)) != RESET)
 #define __HAL_RCC_SPI3_IS_CLK_ENABLED()    ((RCC->APB1ENR & (RCC_APB1ENR_SPI3EN)) != RESET)
 #define __HAL_RCC_USART2_IS_CLK_ENABLED()  ((RCC->APB1ENR & (RCC_APB1ENR_USART2EN)) != RESET)
@@ -1617,9 +1617,9 @@ typedef struct
 #define __HAL_RCC_TIM13_IS_CLK_DISABLED()  ((RCC->APB1ENR & (RCC_APB1ENR_TIM13EN)) == RESET)
 #define __HAL_RCC_TIM14_IS_CLK_DISABLED()  ((RCC->APB1ENR & (RCC_APB1ENR_TIM14EN)) == RESET)
 #define __HAL_RCC_LPTIM1_IS_CLK_DISABLED() ((RCC->APB1ENR & (RCC_APB1ENR_LPTIM1EN)) == RESET)
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_CAN3_IS_CLK_DISABLED()   ((RCC->APB1ENR & (RCC_APB1ENR_CAN3EN)) == RESET)
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #define __HAL_RCC_SPI2_IS_CLK_DISABLED()   ((RCC->APB1ENR & (RCC_APB1ENR_SPI2EN)) == RESET)
 #define __HAL_RCC_SPI3_IS_CLK_DISABLED()   ((RCC->APB1ENR & (RCC_APB1ENR_SPI3EN)) == RESET)
 #define __HAL_RCC_USART2_IS_CLK_DISABLED() ((RCC->APB1ENR & (RCC_APB1ENR_USART2EN)) == RESET)
@@ -1634,7 +1634,7 @@ typedef struct
 #define __HAL_RCC_UART7_IS_CLK_DISABLED()  ((RCC->APB1ENR & (RCC_APB1ENR_UART7EN)) == RESET)
 #define __HAL_RCC_UART8_IS_CLK_DISABLED()  ((RCC->APB1ENR & (RCC_APB1ENR_UART8EN)) == RESET)
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPDIFRX_IS_CLK_ENABLED() ((RCC->APB1ENR & (RCC_APB1ENR_SPDIFRXEN)) != RESET)
 #define __HAL_RCC_CAN2_IS_CLK_ENABLED()    ((RCC->APB1ENR & (RCC_APB1ENR_CAN2EN)) != RESET)
@@ -1645,15 +1645,15 @@ typedef struct
 #define __HAL_RCC_CAN2_IS_CLK_DISABLED()   ((RCC->APB1ENR & (RCC_APB1ENR_CAN2EN)) == RESET)
 #define __HAL_RCC_CEC_IS_CLK_DISABLED()    ((RCC->APB1ENR & (RCC_APB1ENR_CECEN)) == RESET)
 #define __HAL_RCC_I2C4_IS_CLK_DISABLED()   ((RCC->APB1ENR & (RCC_APB1ENR_I2C4EN)) == RESET)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) ||\
-    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) ||\
+    defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) ||\
     defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_RTC_IS_CLK_ENABLED()     ((RCC->APB1ENR & (RCC_APB1ENR_RTCEN)) != RESET)
 #define __HAL_RCC_RTC_IS_CLK_DISABLED()    ((RCC->APB1ENR & (RCC_APB1ENR_RTCEN)) == RESET)
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx ||
-          STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
+          CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
 
 /** @brief  Get the enable or disable status of the APB2 peripheral clock.
   * @note   After reset, the peripheral clock (used for registers read/write access)
@@ -1676,27 +1676,27 @@ typedef struct
 #define __HAL_RCC_SPI5_IS_CLK_ENABLED()    ((RCC->APB2ENR & (RCC_APB2ENR_SPI5EN)) != RESET)
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPI6_IS_CLK_ENABLED()    ((RCC->APB2ENR & (RCC_APB2ENR_SPI6EN)) != RESET)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #define __HAL_RCC_SAI1_IS_CLK_ENABLED()    ((RCC->APB2ENR & (RCC_APB2ENR_SAI1EN)) != RESET)
 #define __HAL_RCC_SAI2_IS_CLK_ENABLED()    ((RCC->APB2ENR & (RCC_APB2ENR_SAI2EN)) != RESET)
-#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 #define __HAL_RCC_LTDC_IS_CLK_ENABLED()    ((RCC->APB2ENR & (RCC_APB2ENR_LTDCEN)) != RESET)
-#endif /* STM32F746xx || STM32F756xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
-#if defined (STM32F769xx) || defined (STM32F779xx)
+#endif /* STM32F746xx || STM32F756xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
+#if defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F779xx)
 #define __HAL_RCC_DSI_IS_CLK_ENABLED()     ((RCC->APB2ENR & (RCC_APB2ENR_DSIEN)) != RESET)
-#endif /* STM32F769xx || STM32F779xx */
+#endif /* CONFIG_ARCH_CPU_STM32F769 || STM32F779xx */
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_IS_CLK_ENABLED()  ((RCC->APB2ENR & (RCC_APB2ENR_SDMMC2EN)) != RESET)
-#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_DFSDM1_IS_CLK_ENABLED()  ((RCC->APB2ENR & (RCC_APB2ENR_DFSDM1EN)) != RESET)
 #define __HAL_RCC_MDIO_IS_CLK_ENABLED()    ((RCC->APB2ENR & (RCC_APB2ENR_MDIOEN)) != RESET)
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #if defined (STM32F723xx) || defined (STM32F733xx) || defined (STM32F730xx)
 #define __HAL_RCC_OTGPHYC_IS_CLK_ENABLED() ((RCC->APB2ENR & (RCC_APB2ENR_OTGPHYCEN)) != RESET)
 #endif /* STM32F723xx || STM32F733xx || STM32F730xx */
@@ -1717,27 +1717,27 @@ typedef struct
 #define __HAL_RCC_SPI5_IS_CLK_DISABLED()   ((RCC->APB2ENR & (RCC_APB2ENR_SPI5EN)) == RESET)
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPI6_IS_CLK_DISABLED()   ((RCC->APB2ENR & (RCC_APB2ENR_SPI6EN)) == RESET)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #define __HAL_RCC_SAI1_IS_CLK_DISABLED()   ((RCC->APB2ENR & (RCC_APB2ENR_SAI1EN)) == RESET)
 #define __HAL_RCC_SAI2_IS_CLK_DISABLED()   ((RCC->APB2ENR & (RCC_APB2ENR_SAI2EN)) == RESET)
-#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 #define __HAL_RCC_LTDC_IS_CLK_DISABLED()   ((RCC->APB2ENR & (RCC_APB2ENR_LTDCEN)) == RESET)
-#endif /* STM32F746xx || STM32F756xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
-#if defined (STM32F769xx) || defined (STM32F779xx)
+#endif /* STM32F746xx || STM32F756xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
+#if defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F779xx)
 #define __HAL_RCC_DSI_IS_CLK_DISABLED()    ((RCC->APB2ENR & (RCC_APB2ENR_DSIEN)) == RESET)
-#endif /* STM32F769xx || STM32F779xx */
+#endif /* CONFIG_ARCH_CPU_STM32F769 || STM32F779xx */
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_IS_CLK_DISABLED() ((RCC->APB2ENR & (RCC_APB2ENR_SDMMC2EN)) == RESET)
-#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_DFSDM1_IS_CLK_DISABLED() ((RCC->APB2ENR & (RCC_APB2ENR_DFSDM1EN)) == RESET)
 #define __HAL_RCC_MDIO_IS_CLK_DISABLED()   ((RCC->APB2ENR & (RCC_APB2ENR_MDIOEN)) == RESET)
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #if defined (STM32F723xx) || defined (STM32F733xx) || defined (STM32F730xx)
 #define __HAL_RCC_OTGPHYC_IS_CLK_DISABLED() ((RCC->APB2ENR & (RCC_APB2ENR_OTGPHYCEN)) == RESET)
 #endif /* STM32F723xx || STM32F733xx || STM32F730xx */
@@ -1778,7 +1778,7 @@ typedef struct
 #define __HAL_RCC_GPIOI_RELEASE_RESET() (RCC->AHB1RSTR &= ~(RCC_AHB1RSTR_GPIOIRST))
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DMA2D_FORCE_RESET()    (RCC->AHB1RSTR |= (RCC_AHB1RSTR_DMA2DRST))
 #define __HAL_RCC_ETHMAC_FORCE_RESET()   (RCC->AHB1RSTR |= (RCC_AHB1RSTR_ETHMACRST))
@@ -1789,7 +1789,7 @@ typedef struct
 #define __HAL_RCC_ETHMAC_RELEASE_RESET() (RCC->AHB1RSTR &= ~(RCC_AHB1RSTR_ETHMACRST))
 #define __HAL_RCC_GPIOJ_RELEASE_RESET() (RCC->AHB1RSTR &= ~(RCC_AHB1RSTR_GPIOJRST))
 #define __HAL_RCC_GPIOK_RELEASE_RESET() (RCC->AHB1RSTR &= ~(RCC_AHB1RSTR_GPIOKRST))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 /** @brief  Force or release AHB2 peripheral reset.
   */
@@ -1801,10 +1801,10 @@ typedef struct
 #define __HAL_RCC_RNG_RELEASE_RESET()  (RCC->AHB2RSTR &= ~(RCC_AHB2RSTR_RNGRST))
 #define __HAL_RCC_USB_OTG_FS_RELEASE_RESET() (RCC->AHB2RSTR &= ~(RCC_AHB2RSTR_OTGFSRST))
 
-#if defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_JPEG_FORCE_RESET()   (RCC->AHB2RSTR |= (RCC_AHB2RSTR_JPEGRST))
 #define __HAL_RCC_JPEG_RELEASE_RESET() (RCC->AHB2RSTR &= ~(RCC_AHB2RSTR_JPEGRST))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 
 #if defined(STM32F756xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 #define __HAL_RCC_CRYP_FORCE_RESET()   (RCC->AHB2RSTR |= (RCC_AHB2RSTR_CRYPRST))
@@ -1819,11 +1819,11 @@ typedef struct
 #endif /* STM32F732xx || STM32F733xx || STM32F730xx */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DCMI_FORCE_RESET()   (RCC->AHB2RSTR |= (RCC_AHB2RSTR_DCMIRST))
 #define __HAL_RCC_DCMI_RELEASE_RESET() (RCC->AHB2RSTR &= ~(RCC_AHB2RSTR_DCMIRST))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 /** @brief  Force or release AHB3 peripheral reset
   */
@@ -1847,9 +1847,9 @@ typedef struct
 #define __HAL_RCC_TIM13_FORCE_RESET()    (RCC->APB1RSTR |= (RCC_APB1RSTR_TIM13RST))
 #define __HAL_RCC_TIM14_FORCE_RESET()    (RCC->APB1RSTR |= (RCC_APB1RSTR_TIM14RST))
 #define __HAL_RCC_LPTIM1_FORCE_RESET()   (RCC->APB1RSTR |= (RCC_APB1RSTR_LPTIM1RST))
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_CAN3_FORCE_RESET()     (RCC->APB1RSTR |= (RCC_APB1RSTR_CAN3RST))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #define __HAL_RCC_SPI2_FORCE_RESET()     (RCC->APB1RSTR |= (RCC_APB1RSTR_SPI2RST))
 #define __HAL_RCC_SPI3_FORCE_RESET()     (RCC->APB1RSTR |= (RCC_APB1RSTR_SPI3RST))
 #define __HAL_RCC_USART2_FORCE_RESET()   (RCC->APB1RSTR |= (RCC_APB1RSTR_USART2RST))
@@ -1874,9 +1874,9 @@ typedef struct
 #define __HAL_RCC_TIM13_RELEASE_RESET()  (RCC->APB1RSTR &= ~(RCC_APB1RSTR_TIM13RST))
 #define __HAL_RCC_TIM14_RELEASE_RESET()  (RCC->APB1RSTR &= ~(RCC_APB1RSTR_TIM14RST))
 #define __HAL_RCC_LPTIM1_RELEASE_RESET() (RCC->APB1RSTR &= ~(RCC_APB1RSTR_LPTIM1RST))
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_CAN3_RELEASE_RESET()   (RCC->APB1RSTR &= ~(RCC_APB1RSTR_CAN3RST))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #define __HAL_RCC_SPI2_RELEASE_RESET()   (RCC->APB1RSTR &= ~(RCC_APB1RSTR_SPI2RST))
 #define __HAL_RCC_SPI3_RELEASE_RESET()   (RCC->APB1RSTR &= ~(RCC_APB1RSTR_SPI3RST))
 #define __HAL_RCC_USART2_RELEASE_RESET() (RCC->APB1RSTR &= ~(RCC_APB1RSTR_USART2RST))
@@ -1892,7 +1892,7 @@ typedef struct
 #define __HAL_RCC_UART8_RELEASE_RESET()  (RCC->APB1RSTR &= ~(RCC_APB1RSTR_UART8RST))
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPDIFRX_FORCE_RESET()  (RCC->APB1RSTR |= (RCC_APB1RSTR_SPDIFRXRST))
 #define __HAL_RCC_I2C4_FORCE_RESET()     (RCC->APB1RSTR |= (RCC_APB1RSTR_I2C4RST))
@@ -1903,7 +1903,7 @@ typedef struct
 #define __HAL_RCC_I2C4_RELEASE_RESET()   (RCC->APB1RSTR &= ~(RCC_APB1RSTR_I2C4RST))
 #define __HAL_RCC_CAN2_RELEASE_RESET()   (RCC->APB1RSTR &= ~(RCC_APB1RSTR_CAN2RST))
 #define __HAL_RCC_CEC_RELEASE_RESET()    (RCC->APB1RSTR &= ~(RCC_APB1RSTR_CECRST))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 /** @brief  Force or release APB2 peripheral reset.
   */
@@ -1921,16 +1921,16 @@ typedef struct
 #define __HAL_RCC_SPI5_FORCE_RESET()     (RCC->APB2RSTR |= (RCC_APB2RSTR_SPI5RST))
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPI6_FORCE_RESET()     (RCC->APB2RSTR |= (RCC_APB2RSTR_SPI6RST))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #define __HAL_RCC_SAI1_FORCE_RESET()     (RCC->APB2RSTR |= (RCC_APB2RSTR_SAI1RST))
 #define __HAL_RCC_SAI2_FORCE_RESET()     (RCC->APB2RSTR |= (RCC_APB2RSTR_SAI2RST))
-#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 #define __HAL_RCC_LTDC_FORCE_RESET()     (RCC->APB2RSTR |= (RCC_APB2RSTR_LTDCRST))
-#endif /* STM32F746xx || STM32F756xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F746xx || STM32F756xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 #if defined (STM32F723xx) || defined (STM32F733xx) || defined (STM32F730xx)
 #define __HAL_RCC_OTGPHYC_FORCE_RESET()  (RCC->APB2RSTR |= (RCC_APB2RSTR_OTGPHYCRST))
 #endif /* STM32F723xx || STM32F733xx || STM32F730xx */
@@ -1949,37 +1949,37 @@ typedef struct
 #define __HAL_RCC_SPI5_RELEASE_RESET()   (RCC->APB2RSTR &= ~(RCC_APB2RSTR_SPI5RST))
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPI6_RELEASE_RESET()   (RCC->APB2RSTR &= ~(RCC_APB2RSTR_SPI6RST))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #define __HAL_RCC_SAI1_RELEASE_RESET()   (RCC->APB2RSTR &= ~(RCC_APB2RSTR_SAI1RST))
 #define __HAL_RCC_SAI2_RELEASE_RESET()   (RCC->APB2RSTR &= ~(RCC_APB2RSTR_SAI2RST))
-#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 #define __HAL_RCC_LTDC_RELEASE_RESET()   (RCC->APB2RSTR &= ~(RCC_APB2RSTR_LTDCRST))
-#endif /* STM32F746xx || STM32F756xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F746xx || STM32F756xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 #if defined (STM32F723xx) || defined (STM32F733xx) || defined (STM32F730xx)
 #define __HAL_RCC_OTGPHYC_RELEASE_RESET() (RCC->APB2RSTR &= ~(RCC_APB2RSTR_OTGPHYCRST))
 #endif /* STM32F723xx || STM32F733xx || STM32F730xx */
 
-#if defined (STM32F769xx) || defined (STM32F779xx)
+#if defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F779xx)
 #define __HAL_RCC_DSI_FORCE_RESET()      (RCC->APB2RSTR |= (RCC_APB2RSTR_DSIRST))
 #define __HAL_RCC_DSI_RELEASE_RESET()    (RCC->APB2RSTR &= ~(RCC_APB2RSTR_DSIRST))
-#endif /* STM32F769xx || STM32F779xx */
+#endif /* CONFIG_ARCH_CPU_STM32F769 || STM32F779xx */
 
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_FORCE_RESET()   (RCC->APB2RSTR |= (RCC_APB2RSTR_SDMMC2RST))
 #define __HAL_RCC_SDMMC2_RELEASE_RESET() (RCC->APB2RSTR &= ~(RCC_APB2RSTR_SDMMC2RST))
-#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
+#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
 
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_DFSDM1_FORCE_RESET()    (RCC->APB2RSTR |= (RCC_APB2RSTR_DFSDM1RST))
 #define __HAL_RCC_MDIO_FORCE_RESET()    (RCC->APB2RSTR |= (RCC_APB2RSTR_MDIORST))
 #define __HAL_RCC_DFSDM1_RELEASE_RESET()  (RCC->APB2RSTR &= ~(RCC_APB2RSTR_DFSDM1RST))
 #define __HAL_RCC_MDIO_RELEASE_RESET()  (RCC->APB2RSTR &= ~(RCC_APB2RSTR_MDIORST))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 /**
   * @}
   */
@@ -2034,7 +2034,7 @@ typedef struct
 #define __HAL_RCC_GPIOI_CLK_SLEEP_DISABLE()     (RCC->AHB1LPENR &= ~(RCC_AHB1LPENR_GPIOILPEN))
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DMA2D_CLK_SLEEP_ENABLE()      (RCC->AHB1LPENR |= (RCC_AHB1LPENR_DMA2DLPEN))
 #define __HAL_RCC_ETHMAC_CLK_SLEEP_ENABLE()     (RCC->AHB1LPENR |= (RCC_AHB1LPENR_ETHMACLPEN))
@@ -2051,7 +2051,7 @@ typedef struct
 #define __HAL_RCC_ETHMACPTP_CLK_SLEEP_DISABLE() (RCC->AHB1LPENR &= ~(RCC_AHB1LPENR_ETHMACPTPLPEN))
 #define __HAL_RCC_GPIOJ_CLK_SLEEP_DISABLE()     (RCC->AHB1LPENR &= ~(RCC_AHB1LPENR_GPIOJLPEN))
 #define __HAL_RCC_GPIOK_CLK_SLEEP_DISABLE()     (RCC->AHB1LPENR &= ~(RCC_AHB1LPENR_GPIOKLPEN))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 /** @brief  Enable or disable the AHB2 peripheral clock during Low Power (Sleep) mode.
   * @note   Peripheral clock gating in SLEEP mode can be used to further reduce
@@ -2060,16 +2060,16 @@ typedef struct
   * @note   By default, all peripheral clocks are enabled during SLEEP mode.
   */
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DCMI_CLK_SLEEP_ENABLE()        (RCC->AHB2LPENR |= (RCC_AHB2LPENR_DCMILPEN))
 #define __HAL_RCC_DCMI_CLK_SLEEP_DISABLE()       (RCC->AHB2LPENR &= ~(RCC_AHB2LPENR_DCMILPEN))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
-#if defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_JPEG_CLK_SLEEP_ENABLE()        (RCC->AHB2LPENR |= (RCC_AHB2LPENR_JPEGLPEN))
 #define __HAL_RCC_JPEG_CLK_SLEEP_DISABLE()       (RCC->AHB2LPENR &= ~(RCC_AHB2LPENR_JPEGLPEN))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 
 #define __HAL_RCC_RNG_CLK_SLEEP_ENABLE()         (RCC->AHB2LPENR |= (RCC_AHB2LPENR_RNGLPEN))
 #define __HAL_RCC_RNG_CLK_SLEEP_DISABLE()        (RCC->AHB2LPENR &= ~(RCC_AHB2LPENR_RNGLPEN))
@@ -2118,9 +2118,9 @@ typedef struct
 #define __HAL_RCC_TIM13_CLK_SLEEP_ENABLE()   (RCC->APB1LPENR |= (RCC_APB1LPENR_TIM13LPEN))
 #define __HAL_RCC_TIM14_CLK_SLEEP_ENABLE()   (RCC->APB1LPENR |= (RCC_APB1LPENR_TIM14LPEN))
 #define __HAL_RCC_LPTIM1_CLK_SLEEP_ENABLE()  (RCC->APB1LPENR |= (RCC_APB1LPENR_LPTIM1LPEN))
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_CAN3_CLK_SLEEP_ENABLE()    (RCC->APB1LPENR |= (RCC_APB1LPENR_CAN3LPEN))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #define __HAL_RCC_SPI2_CLK_SLEEP_ENABLE()    (RCC->APB1LPENR |= (RCC_APB1LPENR_SPI2LPEN))
 #define __HAL_RCC_SPI3_CLK_SLEEP_ENABLE()    (RCC->APB1LPENR |= (RCC_APB1LPENR_SPI3LPEN))
 #define __HAL_RCC_USART2_CLK_SLEEP_ENABLE()  (RCC->APB1LPENR |= (RCC_APB1LPENR_USART2LPEN))
@@ -2145,9 +2145,9 @@ typedef struct
 #define __HAL_RCC_TIM13_CLK_SLEEP_DISABLE()  (RCC->APB1LPENR &= ~(RCC_APB1LPENR_TIM13LPEN))
 #define __HAL_RCC_TIM14_CLK_SLEEP_DISABLE()  (RCC->APB1LPENR &= ~(RCC_APB1LPENR_TIM14LPEN))
 #define __HAL_RCC_LPTIM1_CLK_SLEEP_DISABLE() (RCC->APB1LPENR &= ~(RCC_APB1LPENR_LPTIM1LPEN))
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_CAN3_CLK_SLEEP_DISABLE()   (RCC->APB1LPENR &= ~(RCC_APB1LPENR_CAN3LPEN))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #define __HAL_RCC_SPI2_CLK_SLEEP_DISABLE()   (RCC->APB1LPENR &= ~(RCC_APB1LPENR_SPI2LPEN))
 #define __HAL_RCC_SPI3_CLK_SLEEP_DISABLE()   (RCC->APB1LPENR &= ~(RCC_APB1LPENR_SPI3LPEN))
 #define __HAL_RCC_USART2_CLK_SLEEP_DISABLE() (RCC->APB1LPENR &= ~(RCC_APB1LPENR_USART2LPEN))
@@ -2163,15 +2163,15 @@ typedef struct
 #define __HAL_RCC_UART8_CLK_SLEEP_DISABLE()  (RCC->APB1LPENR &= ~(RCC_APB1LPENR_UART8LPEN))
 
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) ||\
-    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) ||\
+    defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) ||\
     defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_RTC_CLK_SLEEP_ENABLE()     (RCC->APB1LPENR |= (RCC_APB1LPENR_RTCLPEN))
 #define __HAL_RCC_RTC_CLK_SLEEP_DISABLE()    (RCC->APB1LPENR &= ~(RCC_APB1LPENR_RTCLPEN))
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx ||
-          STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
+          CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPDIFRX_CLK_SLEEP_ENABLE() (RCC->APB1LPENR |= (RCC_APB1LPENR_SPDIFRXLPEN))
 #define __HAL_RCC_I2C4_CLK_SLEEP_ENABLE()    (RCC->APB1LPENR |= (RCC_APB1LPENR_I2C4LPEN))
@@ -2182,7 +2182,7 @@ typedef struct
 #define __HAL_RCC_I2C4_CLK_SLEEP_DISABLE()   (RCC->APB1LPENR &= ~(RCC_APB1LPENR_I2C4LPEN))
 #define __HAL_RCC_CAN2_CLK_SLEEP_DISABLE()   (RCC->APB1LPENR &= ~(RCC_APB1LPENR_CAN2LPEN))
 #define __HAL_RCC_CEC_CLK_SLEEP_DISABLE()    (RCC->APB1LPENR &= ~(RCC_APB1LPENR_CECLPEN))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 /** @brief  Enable or disable the APB2 peripheral clock during Low Power (Sleep) mode.
   * @note   Peripheral clock gating in SLEEP mode can be used to further reduce
@@ -2206,9 +2206,9 @@ typedef struct
 #define __HAL_RCC_SPI5_CLK_SLEEP_ENABLE()    (RCC->APB2LPENR |= (RCC_APB2LPENR_SPI5LPEN))
 #define __HAL_RCC_SAI1_CLK_SLEEP_ENABLE()    (RCC->APB2LPENR |= (RCC_APB2LPENR_SAI1LPEN))
 #define __HAL_RCC_SAI2_CLK_SLEEP_ENABLE()    (RCC->APB2LPENR |= (RCC_APB2LPENR_SAI2LPEN))
-#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 #define __HAL_RCC_LTDC_CLK_SLEEP_ENABLE()    (RCC->APB2LPENR |= (RCC_APB2LPENR_LTDCLPEN))
-#endif /* STM32F746xx || STM32F756xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F746xx || STM32F756xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 #define __HAL_RCC_TIM1_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_TIM1LPEN))
 #define __HAL_RCC_TIM8_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_TIM8LPEN))
@@ -2226,31 +2226,31 @@ typedef struct
 #define __HAL_RCC_SPI5_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_SPI5LPEN))
 #define __HAL_RCC_SAI1_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_SAI1LPEN))
 #define __HAL_RCC_SAI2_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_SAI2LPEN))
-#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)|| defined (STM32F750xx)
+#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)|| defined (STM32F750xx)
 #define __HAL_RCC_LTDC_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_LTDCLPEN))
-#endif /* STM32F746xx || STM32F756xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx  */
-#if defined (STM32F769xx) || defined (STM32F779xx)
+#endif /* STM32F746xx || STM32F756xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx  */
+#if defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F779xx)
 #define __HAL_RCC_DSI_CLK_SLEEP_ENABLE()     (RCC->APB2LPENR |= (RCC_APB2LPENR_DSILPEN))
 #define __HAL_RCC_DSI_CLK_SLEEP_DISABLE()    (RCC->APB2LPENR &= ~(RCC_APB2LPENR_DSILPEN))
-#endif /* STM32F769xx || STM32F779xx */
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#endif /* CONFIG_ARCH_CPU_STM32F769 || STM32F779xx */
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_DFSDM1_CLK_SLEEP_ENABLE()   (RCC->APB2LPENR |= (RCC_APB2LPENR_DFSDM1LPEN))
 #define __HAL_RCC_MDIO_CLK_SLEEP_ENABLE()    (RCC->APB2LPENR |= (RCC_APB2LPENR_MDIOLPEN))
 #define __HAL_RCC_DFSDM1_CLK_SLEEP_DISABLE()  (RCC->APB2LPENR &= ~(RCC_APB2LPENR_DFSDM1LPEN))
 #define __HAL_RCC_MDIO_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_MDIOLPEN))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_CLK_SLEEP_ENABLE()  (RCC->APB2LPENR |= (RCC_APB2LPENR_SDMMC2LPEN))
 #define __HAL_RCC_SDMMC2_CLK_SLEEP_DISABLE() (RCC->APB2LPENR &= ~(RCC_APB2LPENR_SDMMC2LPEN))
-#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
+#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPI6_CLK_SLEEP_ENABLE()    (RCC->APB2LPENR |= (RCC_APB2LPENR_SPI6LPEN))
 #define __HAL_RCC_SPI6_CLK_SLEEP_DISABLE()   (RCC->APB2LPENR &= ~(RCC_APB2LPENR_SPI6LPEN))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 /**
   * @}
   */
@@ -2309,7 +2309,7 @@ typedef struct
 #define __HAL_RCC_GPIOI_IS_CLK_SLEEP_DISABLED()     ((RCC->AHB1LPENR & (RCC_AHB1LPENR_GPIOILPEN)) == RESET)
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DMA2D_IS_CLK_SLEEP_ENABLED()      ((RCC->AHB1LPENR & (RCC_AHB1LPENR_DMA2DLPEN)) != RESET)
 #define __HAL_RCC_ETHMAC_IS_CLK_SLEEP_ENABLED()     ((RCC->AHB1LPENR & (RCC_AHB1LPENR_ETHMACLPEN)) != RESET)
@@ -2326,7 +2326,7 @@ typedef struct
 #define __HAL_RCC_ETHMACPTP_IS_CLK_SLEEP_DISABLED() ((RCC->AHB1LPENR & (RCC_AHB1LPENR_ETHMACPTPLPEN)) == RESET)
 #define __HAL_RCC_GPIOJ_IS_CLK_SLEEP_DISABLED()     ((RCC->AHB1LPENR & (RCC_AHB1LPENR_GPIOJLPEN)) == RESET)
 #define __HAL_RCC_GPIOK_IS_CLK_SLEEP_DISABLED()     ((RCC->AHB1LPENR & (RCC_AHB1LPENR_GPIOKLPEN)) == RESET)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 /** @brief  Get the enable or disable status of the AHB2 peripheral clock during Low Power (Sleep) mode.
   * @note   Peripheral clock gating in SLEEP mode can be used to further reduce
@@ -2335,16 +2335,16 @@ typedef struct
   * @note   By default, all peripheral clocks are enabled during SLEEP mode.
   */
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_DCMI_IS_CLK_SLEEP_ENABLED()        ((RCC->AHB2LPENR & (RCC_AHB2LPENR_DCMILPEN)) != RESET)
 #define __HAL_RCC_DCMI_IS_CLK_SLEEP_DISABLED()       ((RCC->AHB2LPENR & (RCC_AHB2LPENR_DCMILPEN)) == RESET)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
-#if defined(STM32F767xx) || defined(STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined(STM32F767xx) || defined(CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_JPEG_IS_CLK_SLEEP_ENABLED()        ((RCC->AHB2LPENR & (RCC_AHB2LPENR_JPEGLPEN)) != RESET)
 #define __HAL_RCC_JPEG_IS_CLK_SLEEP_DISABLED()       ((RCC->AHB2LPENR & (RCC_AHB2LPENR_JPEGLPEN)) == RESET)
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 
 #define __HAL_RCC_RNG_IS_CLK_SLEEP_ENABLED()         ((RCC->AHB2LPENR & (RCC_AHB2LPENR_RNGLPEN)) != RESET)
 #define __HAL_RCC_RNG_IS_CLK_SLEEP_DISABLED()        ((RCC->AHB2LPENR & (RCC_AHB2LPENR_RNGLPEN)) == RESET)
@@ -2394,14 +2394,14 @@ typedef struct
 #define __HAL_RCC_TIM14_IS_CLK_SLEEP_ENABLED()   ((RCC->APB1LPENR & (RCC_APB1LPENR_TIM14LPEN)) != RESET)
 #define __HAL_RCC_LPTIM1_IS_CLK_SLEEP_ENABLED()  ((RCC->APB1LPENR & (RCC_APB1LPENR_LPTIM1LPEN)) != RESET)
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) ||\
-    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) ||\
+    defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) ||\
     defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_RTC_IS_CLK_SLEEP_ENABLED()     ((RCC->APB1LPENR & (RCC_APB1LPENR_RTCLPEN)) != RESET)
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx ||
-          STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+          CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_CAN3_IS_CLK_SLEEP_ENABLED()    ((RCC->APB1LPENR & (RCC_APB1LPENR_CAN3LPEN)) != RESET)
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #define __HAL_RCC_SPI2_IS_CLK_SLEEP_ENABLED()    ((RCC->APB1LPENR & (RCC_APB1LPENR_SPI2LPEN)) != RESET)
 #define __HAL_RCC_SPI3_IS_CLK_SLEEP_ENABLED()    ((RCC->APB1LPENR & (RCC_APB1LPENR_SPI3LPEN)) != RESET)
 #define __HAL_RCC_USART2_IS_CLK_SLEEP_ENABLED()  ((RCC->APB1LPENR & (RCC_APB1LPENR_USART2LPEN)) != RESET)
@@ -2427,14 +2427,14 @@ typedef struct
 #define __HAL_RCC_TIM14_IS_CLK_SLEEP_DISABLED()  ((RCC->APB1LPENR & (RCC_APB1LPENR_TIM14LPEN)) == RESET)
 #define __HAL_RCC_LPTIM1_IS_CLK_SLEEP_DISABLED() ((RCC->APB1LPENR & (RCC_APB1LPENR_LPTIM1LPEN)) == RESET)
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) ||\
-    defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) ||\
+    defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) ||\
     defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_RTC_IS_CLK_SLEEP_DISABLED()    ((RCC->APB1LPENR & (RCC_APB1LPENR_RTCLPEN)) == RESET)
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx ||
-          STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+          CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_CAN3_IS_CLK_SLEEP_DISABLED()   ((RCC->APB1LPENR & (RCC_APB1LPENR_CAN3LPEN)) == RESET)
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 #define __HAL_RCC_SPI2_IS_CLK_SLEEP_DISABLED()   ((RCC->APB1LPENR & (RCC_APB1LPENR_SPI2LPEN)) == RESET)
 #define __HAL_RCC_SPI3_IS_CLK_SLEEP_DISABLED()   ((RCC->APB1LPENR & (RCC_APB1LPENR_SPI3LPEN)) == RESET)
 #define __HAL_RCC_USART2_IS_CLK_SLEEP_DISABLED() ((RCC->APB1LPENR & (RCC_APB1LPENR_USART2LPEN)) == RESET)
@@ -2450,7 +2450,7 @@ typedef struct
 #define __HAL_RCC_UART8_IS_CLK_SLEEP_DISABLED()  ((RCC->APB1LPENR & (RCC_APB1LPENR_UART8LPEN)) == RESET)
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPDIFRX_IS_CLK_SLEEP_ENABLED() ((RCC->APB1LPENR & (RCC_APB1LPENR_SPDIFRXLPEN)) != RESET)
 #define __HAL_RCC_I2C4_IS_CLK_SLEEP_ENABLED()    ((RCC->APB1LPENR & (RCC_APB1LPENR_I2C4LPEN)) != RESET)
@@ -2461,7 +2461,7 @@ typedef struct
 #define __HAL_RCC_I2C4_IS_CLK_SLEEP_DISABLED()   ((RCC->APB1LPENR & (RCC_APB1LPENR_I2C4LPEN)) == RESET)
 #define __HAL_RCC_CAN2_IS_CLK_SLEEP_DISABLED()   ((RCC->APB1LPENR & (RCC_APB1LPENR_CAN2LPEN)) == RESET)
 #define __HAL_RCC_CEC_IS_CLK_SLEEP_DISABLED()    ((RCC->APB1LPENR & (RCC_APB1LPENR_CECLPEN)) == RESET)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 /** @brief  Get the enable or disable status of the APB2 peripheral clock during Low Power (Sleep) mode.
   * @note   Peripheral clock gating in SLEEP mode can be used to further reduce
@@ -2485,20 +2485,20 @@ typedef struct
 #define __HAL_RCC_SPI5_IS_CLK_SLEEP_ENABLED()    ((RCC->APB2LPENR & (RCC_APB2LPENR_SPI5LPEN)) != RESET)
 #define __HAL_RCC_SAI1_IS_CLK_SLEEP_ENABLED()    ((RCC->APB2LPENR & (RCC_APB2LPENR_SAI1LPEN)) != RESET)
 #define __HAL_RCC_SAI2_IS_CLK_SLEEP_ENABLED()    ((RCC->APB2LPENR & (RCC_APB2LPENR_SAI2LPEN)) != RESET)
-#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 #define __HAL_RCC_LTDC_IS_CLK_SLEEP_ENABLED()    ((RCC->APB2LPENR & (RCC_APB2LPENR_LTDCLPEN)) != RESET)
-#endif /* STM32F746xx || STM32F756xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
-#if defined (STM32F769xx) || defined (STM32F779xx)
+#endif /* STM32F746xx || STM32F756xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
+#if defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F779xx)
 #define __HAL_RCC_DSI_IS_CLK_SLEEP_ENABLED()     ((RCC->APB2LPENR & (RCC_APB2LPENR_DSILPEN)) != RESET)
-#endif /* STM32F769xx || STM32F779xx */
+#endif /* CONFIG_ARCH_CPU_STM32F769 || STM32F779xx */
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_IS_CLK_SLEEP_ENABLED()  ((RCC->APB2LPENR & (RCC_APB2LPENR_SDMMC2LPEN)) != RESET)
-#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_DFSDM1_IS_CLK_SLEEP_ENABLED()   ((RCC->APB2LPENR & (RCC_APB2LPENR_DFSDM1LPEN)) != RESET)
 #define __HAL_RCC_MDIO_IS_CLK_SLEEP_ENABLED()    ((RCC->APB2LPENR & (RCC_APB2LPENR_MDIOLPEN)) != RESET)
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 
 #define __HAL_RCC_TIM1_IS_CLK_SLEEP_DISABLED()   ((RCC->APB2LPENR & (RCC_APB2LPENR_TIM1LPEN)) == RESET)
 #define __HAL_RCC_TIM8_IS_CLK_SLEEP_DISABLED()   ((RCC->APB2LPENR & (RCC_APB2LPENR_TIM8LPEN)) == RESET)
@@ -2516,33 +2516,33 @@ typedef struct
 #define __HAL_RCC_SPI5_IS_CLK_SLEEP_DISABLED()   ((RCC->APB2LPENR & (RCC_APB2LPENR_SPI5LPEN)) == RESET)
 #define __HAL_RCC_SAI1_IS_CLK_SLEEP_DISABLED()   ((RCC->APB2LPENR & (RCC_APB2LPENR_SAI1LPEN)) == RESET)
 #define __HAL_RCC_SAI2_IS_CLK_SLEEP_DISABLED()   ((RCC->APB2LPENR & (RCC_APB2LPENR_SAI2LPEN)) == RESET)
-#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+#if defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 #define __HAL_RCC_LTDC_IS_CLK_SLEEP_DISABLED()   ((RCC->APB2LPENR & (RCC_APB2LPENR_LTDCLPEN)) == RESET)
-#endif /* STM32F746xx || STM32F756xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
-#if defined (STM32F769xx) || defined (STM32F779xx)
+#endif /* STM32F746xx || STM32F756xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
+#if defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F779xx)
 #define __HAL_RCC_DSI_IS_CLK_SLEEP_DISABLED()     ((RCC->APB2LPENR & (RCC_APB2LPENR_DSILPEN)) == RESET)
-#endif /* STM32F769xx || STM32F779xx */
+#endif /* CONFIG_ARCH_CPU_STM32F769 || STM32F779xx */
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define __HAL_RCC_SDMMC2_IS_CLK_SLEEP_DISABLED()  ((RCC->APB2LPENR & (RCC_APB2LPENR_SDMMC2LPEN)) == RESET)
-#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define __HAL_RCC_DFSDM1_IS_CLK_SLEEP_DISABLED()   ((RCC->APB2LPENR & (RCC_APB2LPENR_DFSDM1LPEN)) == RESET)
 #define __HAL_RCC_MDIO_IS_CLK_SLEEP_DISABLED()    ((RCC->APB2LPENR & (RCC_APB2LPENR_MDIOLPEN)) == RESET)
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 #define __HAL_RCC_SPI6_IS_CLK_SLEEP_ENABLED()    ((RCC->APB2LPENR & (RCC_APB2LPENR_SPI6LPEN)) != RESET)
 #define __HAL_RCC_SPI6_IS_CLK_SLEEP_DISABLED()   ((RCC->APB2LPENR & (RCC_APB2LPENR_SPI6LPEN)) == RESET)
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 /**
   * @}
   */
 
 /*------------------------------- PLL Configuration --------------------------*/
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 /** @brief  Macro to configure the main PLL clock source, multiplication and division factors.
   * @note   This function must be used only when the main PLL is disabled.
   * @param  __RCC_PLLSource__ specifies the PLL entry clock source.
@@ -2611,7 +2611,7 @@ typedef struct
                             ((__PLLN__) << RCC_PLLCFGR_PLLN_Pos)                          | \
                             ((((__PLLP__) >> 1) -1) << RCC_PLLCFGR_PLLP_Pos)              | \
                             ((__PLLQ__) << RCC_PLLCFGR_PLLQ_Pos)))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 /*---------------------------------------------------------------------------------------------*/
 
 /** @brief  Macro to configure the Timers clocks prescalers
@@ -2737,7 +2737,7 @@ typedef struct
 #define __HAL_RCC_PLLSAI_PLLSAICLKDIVQ_CONFIG(__PLLSAIDivQ__) (MODIFY_REG(RCC->DCKCFGR1, RCC_DCKCFGR1_PLLSAIDIVQ, ((__PLLSAIDivQ__)-1)<<8))
 
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) ||\
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) ||\
     defined (STM32F750xx)
 /** @brief  Macro to configure the LTDC clock Divider coming from PLLSAI.
   * @note   This function must be called before enabling the PLLSAI.
@@ -2747,7 +2747,7 @@ typedef struct
   */
 #define __HAL_RCC_PLLSAI_PLLSAICLKDIVR_CONFIG(__PLLSAIDivR__)\
                             MODIFY_REG(RCC->DCKCFGR1, RCC_DCKCFGR1_PLLSAIDIVR, (uint32_t)(__PLLSAIDivR__))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 
 /** @brief  Macro to configure SAI1 clock source selection.
   * @note   This function must be called before enabling PLLSAI, PLLI2S and
@@ -3161,7 +3161,7 @@ typedef struct
 #define __HAL_RCC_GET_SDMMC1_SOURCE() ((uint32_t)(READ_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_SDMMC1SEL)))
 
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 /** @brief  Macro to configure the SDMMC2 clock (SDMMC2CLK).
   * @param  __SDMMC2_CLKSOURCE__ specifies the SDMMC2 clock source.
   *          This parameter can be one of the following values:
@@ -3177,9 +3177,9 @@ typedef struct
   *            @arg RCC_SDMMC2CLKSOURCE_SYSCLK: SYSCLK selected as SDMMC2 clock
   */
 #define __HAL_RCC_GET_SDMMC2_SOURCE() ((uint32_t)(READ_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_SDMMC2SEL)))
-#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx  || STM32F730xx */
+#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx  || STM32F730xx */
 
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 /** @brief  Macro to configure the DFSDM1 clock
   * @param  __DFSDM1_CLKSOURCE__ specifies the DFSDM1  clock source.
   *         This parameter can be one of the following values:
@@ -3211,9 +3211,9 @@ typedef struct
   *            @arg RCC_DFSDM1AUDIOCLKSOURCE_SAI2:  SAI2 Clock selected as DFSDM1 Audio clock
   */
 #define __HAL_RCC_GET_DFSDM1AUDIO_SOURCE() ((uint32_t)(READ_BIT(RCC->DCKCFGR1, RCC_DCKCFGR1_ADFSDM1SEL)))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 
-#if defined (STM32F769xx) || defined (STM32F779xx)
+#if defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F779xx)
 /** @brief  Macro to configure the DSI clock.
   * @param  __DSI_CLKSOURCE__ specifies the DSI clock source.
   *         This parameter can be one of the following values:
@@ -3228,7 +3228,7 @@ typedef struct
   *            @arg RCC_DSICLKSOURCE_DSIPHY: DSI-PHY output used as DSI clock.
   */
 #define __HAL_RCC_GET_DSI_SOURCE() (READ_BIT(RCC->DCKCFGR2, RCC_DCKCFGR2_DSISEL))
-#endif /* STM32F769xx || STM32F779xx */
+#endif /* CONFIG_ARCH_CPU_STM32F769 || STM32F779xx */
 /**
   * @}
   */
@@ -3237,13 +3237,13 @@ typedef struct
 /** @addtogroup RCCEx_Exported_Functions_Group1
   * @{
   */
-HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit);
-void HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit);
-uint32_t HAL_RCCEx_GetPeriphCLKFreq(uint32_t PeriphClk);
-HAL_StatusTypeDef HAL_RCCEx_EnablePLLI2S(RCC_PLLI2SInitTypeDef  *PLLI2SInit);
-HAL_StatusTypeDef HAL_RCCEx_DisablePLLI2S(void);
-HAL_StatusTypeDef HAL_RCCEx_EnablePLLSAI(RCC_PLLSAIInitTypeDef  *PLLSAIInit);
-HAL_StatusTypeDef HAL_RCCEx_DisablePLLSAI(void);
+/* HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit); */
+/* void HAL_RCCEx_GetPeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClkInit); */
+/* uint32_t HAL_RCCEx_GetPeriphCLKFreq(uint32_t PeriphClk); */
+/* HAL_StatusTypeDef HAL_RCCEx_EnablePLLI2S(RCC_PLLI2SInitTypeDef  *PLLI2SInit); */
+/* HAL_StatusTypeDef HAL_RCCEx_DisablePLLI2S(void); */
+/* HAL_StatusTypeDef HAL_RCCEx_EnablePLLSAI(RCC_PLLSAIInitTypeDef  *PLLSAIInit); */
+/* HAL_StatusTypeDef HAL_RCCEx_DisablePLLSAI(void); */
 /**
   * @}
   */
@@ -3303,7 +3303,7 @@ HAL_StatusTypeDef HAL_RCCEx_DisablePLLSAI(void);
                 (((SELECTION) & RCC_PERIPHCLK_SDMMC1)      == RCC_PERIPHCLK_SDMMC1)  || \
                 (((SELECTION) & RCC_PERIPHCLK_SPDIFRX)     == RCC_PERIPHCLK_SPDIFRX) || \
                 (((SELECTION) & RCC_PERIPHCLK_RTC)         == RCC_PERIPHCLK_RTC))
-#elif defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#elif defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define IS_RCC_PERIPHCLOCK(SELECTION)  \
                ((((SELECTION) & RCC_PERIPHCLK_I2S)         == RCC_PERIPHCLK_I2S)     || \
                 (((SELECTION) & RCC_PERIPHCLK_LTDC)        == RCC_PERIPHCLK_LTDC)    || \
@@ -3383,12 +3383,12 @@ HAL_StatusTypeDef HAL_RCCEx_DisablePLLSAI(void);
 #endif /* STM32F746xx || STM32F756xx || STM32F750xx */
 #define IS_RCC_PLLI2SN_VALUE(VALUE) ((50 <= (VALUE)) && ((VALUE) <= 432))
 #if defined (STM32F745xx) || defined (STM32F746xx) || defined (STM32F756xx) || defined (STM32F765xx) || defined (STM32F767xx) || \
-    defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
+    defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F750xx)
 #define IS_RCC_PLLI2SP_VALUE(VALUE) (((VALUE) == RCC_PLLI2SP_DIV2) ||\
                                      ((VALUE) == RCC_PLLI2SP_DIV4) ||\
                                      ((VALUE) == RCC_PLLI2SP_DIV6) ||\
                                      ((VALUE) == RCC_PLLI2SP_DIV8))
-#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F750xx */
+#endif /* STM32F745xx || STM32F746xx || STM32F756xx || STM32F765xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F750xx */
 #define IS_RCC_PLLI2SQ_VALUE(VALUE) ((2 <= (VALUE)) && ((VALUE) <= 15))
 #define IS_RCC_PLLI2SR_VALUE(VALUE) ((2 <= (VALUE)) && ((VALUE) <= 7))
 
@@ -3501,7 +3501,7 @@ HAL_StatusTypeDef HAL_RCCEx_DisablePLLSAI(void);
                                        ((SOURCE) == RCC_SAI2CLKSOURCE_PIN))
 #endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F745xx || STM32F746xx || STM32F756xx || STM32F750xx || STM32F730xx */
 
-#if defined (STM32F765xx) || defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F765xx) || defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define IS_RCC_PLLR_VALUE(VALUE)            ((2 <= (VALUE)) && ((VALUE) <= 7))
 
 #define IS_RCC_SAI1CLKSOURCE(SOURCE)  (((SOURCE) == RCC_SAI1CLKSOURCE_PLLSAI) || \
@@ -3519,18 +3519,18 @@ HAL_StatusTypeDef HAL_RCCEx_DisablePLLSAI(void);
 
 #define IS_RCC_DFSDM1AUDIOCLKSOURCE(SOURCE)  (((SOURCE) == RCC_DFSDM1AUDIOCLKSOURCE_SAI1) || \
                                              ((SOURCE) == RCC_DFSDM1AUDIOCLKSOURCE_SAI2))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 
 #if defined (STM32F722xx) || defined (STM32F723xx) || defined (STM32F732xx) || defined (STM32F733xx) || defined (STM32F765xx) ||\
-    defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
+    defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx) || defined (STM32F730xx)
 #define IS_RCC_SDMMC2CLKSOURCE(SOURCE)  (((SOURCE) == RCC_SDMMC2CLKSOURCE_SYSCLK) || \
                                          ((SOURCE) == RCC_SDMMC2CLKSOURCE_CLK48))
-#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx || STM32F730xx */
+#endif /* STM32F722xx || STM32F723xx || STM32F732xx || STM32F733xx || STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx || STM32F730xx */
 
-#if defined (STM32F767xx) || defined (STM32F769xx) || defined (STM32F777xx) || defined (STM32F779xx)
+#if defined (STM32F767xx) || defined (CONFIG_ARCH_CPU_STM32F769) || defined (STM32F777xx) || defined (STM32F779xx)
 #define IS_RCC_DSIBYTELANECLKSOURCE(SOURCE) (((SOURCE) == RCC_DSICLKSOURCE_PLLR)  ||\
                                              ((SOURCE) == RCC_DSICLKSOURCE_DSIPHY))
-#endif /* STM32F767xx || STM32F769xx || STM32F777xx || STM32F779xx */
+#endif /* STM32F767xx || CONFIG_ARCH_CPU_STM32F769 || STM32F777xx || STM32F779xx */
 
 /**
   * @}

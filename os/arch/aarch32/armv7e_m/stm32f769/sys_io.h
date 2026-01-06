@@ -1,6 +1,15 @@
 #ifndef __SYS_IO_H__
 #define __SYS_IO_H__
 
+#include <stdint.h>
+
+#define REG32(addr)                  (*(volatile uint32_t *)(uint32_t)(addr))
+#define REG16(addr)                  (*(volatile uint16_t *)(uint32_t)(addr))
+#define REG8(addr)                   (*(volatile uint8_t *)(uint32_t)(addr))
+#ifndef BIT
+#define BIT(x)                       ((uint32_t)((uint32_t)0x01U<<(x)))
+#endif
+
 static inline uint8_t sys_read8(uint32_t addr)
 {
 	return *(volatile uint8_t *)addr;
