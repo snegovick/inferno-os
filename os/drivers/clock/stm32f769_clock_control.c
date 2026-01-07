@@ -9,7 +9,7 @@
 #include "stm32f769_clocks.h"
 
 #define STM32F769_CLOCK_ID_OFFSET(id) (((id) >> 6U) & 0xFFU)
-#define STM32F769_CLOCK_ID_BIT(id)   ((id)&0x1FU)
+#define STM32F769_CLOCK_ID_BIT(id)   (id & 0x1FU)
 
 volatile uint64_t uptime_ctr;
 
@@ -18,6 +18,8 @@ void SysTick_Handler(void) {
 }
 
 int stm32f769_clock_control_on(uint16_t id) {
+  uint32_t addr = RCC_BASE + STM32F769_CLOCK_ID_OFFSET(id);
+  uint32_t bit = STM32F769_CLOCK_ID_BIT(id);
   sys_set_bit(RCC_BASE + STM32F769_CLOCK_ID_OFFSET(id),
               STM32F769_CLOCK_ID_BIT(id));
   int ret = sys_test_bit(RCC_BASE + STM32F769_CLOCK_ID_OFFSET(id),
@@ -126,7 +128,6 @@ int stm32f769_clock_control_get_rate(uint16_t id, uint32_t *rate)
 int stm32f769_clock_control_init(struct device *dev)
 {
   uint32_t tickstart;
-  uint32_t pll_config;
 
   if ((__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_SYSCLKSOURCE_STATUS_HSE) || ((__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_SYSCLKSOURCE_STATUS_PLLCLK) && ((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLCFGR_PLLSRC_HSE))) {
     if ((__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) != 0)) {// && (RCC_OscInitStruct->HSEState == RCC_HSE_OFF)) {
@@ -136,10 +137,10 @@ int stm32f769_clock_control_init(struct device *dev)
 
 #if defined(CONFIG_BOARD_HSE_CLK)
 #if CONFIG_BOARD_HSE_BYP == 1
-    sys_set_bit(RCC->CR, RCC_CR_HSEBYP);
-    sys_set_bit(RCC->CR, RCC_CR_HSEON);
+    RCC->CR |= RCC_CR_HSEBYP;
+    RCC->CR |= RCC_CR_HSEON;
 #else
-    sys_set_bit(RCC->CR, RCC_CR_HSEON);
+    RCC->CR |= RCC_CR_HSEON;
 #endif
     /* Get Start Tick*/
     tickstart = uptime_ctr;
