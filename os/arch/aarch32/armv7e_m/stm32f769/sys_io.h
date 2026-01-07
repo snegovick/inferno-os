@@ -10,6 +10,14 @@
 #define BIT(x)                       ((uint32_t)((uint32_t)0x01U<<(x)))
 #endif
 
+#define SET_BIT(r, b) (r |= (b))
+#define CLEAR_BIT(r, b) (r &= ~(b))
+#define READ_BIT(r, b) ((r) & (b))
+#define CLEAR_REG(r) ((r) = (0x0))
+#define WRITE_REG(r, v) ((r) = (v))
+#define READ_REG(r) ((r))
+#define MODIFY_REG(r, clear_mask, set_mask) WRITE_REG((r), (((READ_REG(r)) & (~(clear_mask))) | (set_mask)))
+
 static inline uint8_t sys_read8(uint32_t addr)
 {
 	return *(volatile uint8_t *)addr;
@@ -66,7 +74,7 @@ static inline void sys_clear_bit(uint32_t addr, unsigned int bit)
 
 static inline int sys_test_bit(uint32_t addr, unsigned int bit)
 {
-	uint32_t temp = *(volatile uint32_t *)addr;
+	volatile uint32_t temp = *(volatile uint32_t *)addr;
 
 	return temp & (1 << bit);
 }
