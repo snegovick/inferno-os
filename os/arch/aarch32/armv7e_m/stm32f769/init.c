@@ -6,22 +6,18 @@
 #include <drivers/memory/stm32f7_mpu.h>
 #include <drivers/clock/stm32f769_clocks.h>
 #include <drivers/clock/stm32f769_clock_control.h>
+#include <drivers/pinctrl/stm32f769_pinctrl.h>
 #include <drivers/uart/stm32f7_uart.h>
 #include <drivers/uart/uart.h>
+#include <drivers/gpio/gpio.h>
+#include <drivers/gpio/stm32f769_gpio.h>
 
 #include "cortex.h"
 
 struct device mpu;
 struct device clkctrl;
 struct device usart1;
-
-struct rcc_clk_init {
-  uint32_t ClockType;
-  uint32_t SYSCLKSource;
-  uint32_t AHBCLKDivider;
-  uint32_t APB1CLKDivider;
-  uint32_t APB2CLKDivider;
-};
+struct device gpioj;
 
 extern volatile uint64_t uptime_ctr;
 
@@ -40,62 +36,52 @@ static void __cpu_cache_enable(void)
   SCB_EnableDCache();
 }
 
-#define __FLASH_ART_ENABLE() sys_set_bit(FLASH->ACR, FLASH_ACR_ARTEN)
-#define __FLASH_PREFETCH_BUFFER_ENABLE() sys_set_bit(FLASH->ACR, FLASH_ACR_PRFTEN)
-#define TICK_INT_PRIORITY 0x0FU
+void WWDG_IRQHandler(void)
+{
+  while (1) {
+  }
+}
+
+void NMI_Handler(void)
+{
+}
+
+void HardFault_Handler(void)
+{
+  while (1)
+  {
+  }
+}
+
+void MemManage_Handler(void)
+{
+  while (1)
+  {
+  }
+}
+
+void BusFault_Handler(void)
+{
+  while (1)
+  {
+  }
+}
+
+void UsageFault_Handler(void)
+{
+  while (1)
+  {
+  }
+}
+
+#define __FLASH_ART_ENABLE() SET_BIT(FLASH->ACR, FLASH_ACR_ARTEN)
+#define __FLASH_PREFETCH_BUFFER_ENABLE() SET_BIT(FLASH->ACR, FLASH_ACR_PRFTEN)
 
 static void __nvic_setpriority(IRQn_Type IRQn, uint32_t PreemptPriority, uint32_t SubPriority)
 {
   uint32_t prioritygroup = 0x00;
   prioritygroup = NVIC_GetPriorityGrouping();
   NVIC_SetPriority(IRQn, NVIC_EncodePriority(prioritygroup, PreemptPriority, SubPriority));
-}
-
-static void __rcc_get_clock_config(struct rcc_clk_init  *clkinit, uint32_t *flash_latency)
-{
-  /* Set all possible values for the Clock type parameter --------------------*/
-  clkinit->ClockType = RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-
-  /* Get the SYSCLK configuration --------------------------------------------*/
-  clkinit->SYSCLKSource = (uint32_t)(RCC->CFGR & RCC_CFGR_SW);
-
-  /* Get the HCLK configuration ----------------------------------------------*/
-  clkinit->AHBCLKDivider = (uint32_t)(RCC->CFGR & RCC_CFGR_HPRE);
-
-  /* Get the APB1 configuration ----------------------------------------------*/
-  clkinit->APB1CLKDivider = (uint32_t)(RCC->CFGR & RCC_CFGR_PPRE1);
-
-  /* Get the APB2 configuration ----------------------------------------------*/
-  clkinit->APB2CLKDivider = (uint32_t)((RCC->CFGR & RCC_CFGR_PPRE2) >> 3);
-
-  /* Get the Flash Wait State (Latency) configuration ------------------------*/
-  *flash_latency = (uint32_t)(FLASH->ACR & FLASH_ACR_LATENCY);
-}
-
-
-static int __init_tick (uint32_t TickPriority)
-{
-  struct rcc_clk_init clkconfig;
-  //uint32_t uwTimclock, uwAPB1Prescaler = 0U;
-  uint32_t flash_latency;
-
-  /*Configure the TIM6 IRQ priority */
-  __nvic_setpriority(SysTick_IRQn, TickPriority, 0U);
-
-  /* Enable the TIM6 global Interrupt */
-  NVIC_EnableIRQ(SysTick_IRQn);
-
-  /* Get clock configuration */
-  __rcc_get_clock_config(&clkconfig, &flash_latency);
-
-  uint32_t sys_rate = 0;
-  stm32f769_clock_control_get_rate(STM32F769_RCC_SYS_SET_OFFSET, &sys_rate);
-
-  sys_write32(((sys_rate / 1000) - 1) & SysTick_LOAD_RELOAD_Msk, SysTick->LOAD);
-  sys_clear_bits(SysTick->CTRL, SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_TICKINT_Msk);
-
-  /* Return function status */
-  return 0;
 }
 
 void arch_init(void) {
@@ -112,10 +98,13 @@ void arch_init(void) {
 #endif /* PREFETCH_ENABLE */
 
   NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
-  __init_tick(TICK_INT_PRIORITY);
+  stm32f769_init_tick();
 
-  stm32f769_clock_control_init(&clkctrl);
+  if (stm32f769_clock_control_init(&clkctrl) < 0) {
+    while (1) {}
+  }
 
+  stm32f769_clock_control_on(STM32F769_CLOCK_GPIOA);
   stm32f769_clock_control_on(STM32F769_CLOCK_USART1);
 
   struct uart_data u1_data;
@@ -128,12 +117,33 @@ void arch_init(void) {
   usart1.devptr = USART1;
   usart1.data = &u1_data;
 
-  stm32f7_uart_init(&usart1);
+  stm32f769_pinctrl_configure_pin(STM32F769_PINMUX_AF(STM32F769_PORTA, 9, AF7));
+  stm32f769_pinctrl_configure_pin(STM32F769_PINMUX_AF(STM32F769_PORTA, 10, AF7));
+
+  if (stm32f7_uart_init(&usart1) < 0) {
+    while (1) {
+    }
+  }
+
   stm32f7_uart_tx(&usart1, "Start\r\n");
 
+  gpioj.devptr = GPIOJ;
+  stm32f769_gpio_init(&gpioj);
+  stm32f769_gpio_configure(&gpioj, 13, GPIO_OUTPUT);
+  int stat = 0;
+  uint32_t sys_rate = 0;
+
   while (1) {
+    if (stat) {
+      stm32f769_gpio_write(&gpioj, 13, stat);
+      stat = 0;
+    } else {
+      stm32f769_gpio_write(&gpioj, 13, stat);
+      stat = 1;
+    }
     stm32f7_uart_tx(&usart1, "Test\r\n");
     wait(1000);
+    stm32f769_clock_control_get_rate(STM32F769_CLOCK_SYS, &sys_rate);
   }
   return;
 }
