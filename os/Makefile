@@ -21,6 +21,8 @@ SOURCES = main.c
 SOURCES+= arch/aarch32/armv7e_m/stm32f769/init.c
 SOURCES+= arch/aarch32/armv7e_m/stm32f7/system_stm32f7xx.c
 SOURCES+= drivers/clock/stm32f769_clock_control.c
+SOURCES+= drivers/pinctrl/stm32f769_pinctrl.c
+SOURCES+= drivers/gpio/stm32f769_gpio.c
 SOURCES+= drivers/memory/stm32f7_mpu.c
 SOURCES+= drivers/uart/stm32f7_uart.c
 
