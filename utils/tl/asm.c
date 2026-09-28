@@ -1468,6 +1468,110 @@ if(debug['G']) print("%ulx: %s: arm %d %d %d %d\n", (ulong)(p->pc), p->from.sym-
 		// o1 = olr(instoffset, p->to.reg, REGTMP, p->scond);	// mov O(R), Rtmp
 		o1 = ((p->scond&C_SCOND)<<28) | (0x12fff<<8) | (1<<4) | p->to.reg;		// BX R
 		break;
+
+	case 100:	/* movwi $lcon, reg */
+		o1 = 0xF2400000 | (p->to.reg << 16) | (p->from.offset & 0xFFF);
+		break;
+
+	case 101:	/* movt $lcon, reg */
+		o1 = 0xF2C00000 | (p->to.reg << 16) | (p->from.offset & 0xFFF);
+		break;
+
+	case 102:	/* sdiv r,r,r */
+		o1 = 0xBA000000 | (p->reg << 8) | (p->to.reg << 12) | p->from.reg;
+		break;
+
+	case 103:	/* udiv r,r,r */
+		o1 = 0xBA400000 | (p->reg << 8) | (p->to.reg << 12) | p->from.reg;
+		break;
+
+	case 104:	/* mul r,r,r */
+		o1 = 0xFB000000 | (p->reg << 8) | (p->to.reg << 12) | p->from.reg;
+		break;
+
+	case 105:	/* cbz r, label */
+		o1 = 0xB1000000 | (p->from.reg << 16);
+		if(p->cond != P) {
+			long off = (p->cond->pc - pc) / 2 - 1;
+			o1 |= (off & 0x7F) << 8;
+		}
+		break;
+
+	case 106:	/* cbnz r, label */
+		o1 = 0xB9000000 | (p->from.reg << 16);
+		if(p->cond != P) {
+			long off = (p->cond->pc - pc) / 2 - 1;
+			o1 |= (off & 0x7F) << 8;
+		}
+		break;
+
+	case 107:	/* clz r,r */
+		o1 = 0x04BF0000 | (p->to.reg << 12) | p->from.reg;
+		break;
+
+	case 108:	/* rev r,r */
+		o1 = 0x043F0000 | (p->to.reg << 12) | p->from.reg;
+		break;
+
+	case 109:	/* rev16 r,r */
+		o1 = 0x047F0000 | (p->to.reg << 12) | p->from.reg;
+		break;
+
+	case 110:	/* revsh r,r */
+		o1 = 0x04FF0000 | (p->to.reg << 12) | p->from.reg;
+		break;
+
+	case 111:	/* sxtb r,r */
+		o1 = 0x04BF0080 | (p->to.reg << 12) | p->from.reg;
+		break;
+
+	case 112:	/* sxth r,r */
+		o1 = 0x04FF0080 | (p->to.reg << 12) | p->from.reg;
+		break;
+
+	case 113:	/* bfi r,r,#lsb,#width */
+		o1 = 0xB7000000 | (p->to.reg << 16) | (p->from.reg << 8);
+		break;
+
+	case 114:	/* bfc r,#lsb,#width */
+		o1 = 0xB7000000 | (p->to.reg << 16);
+		break;
+
+	case 115:	/* ssat r,#sat,r */
+		o1 = 0x06400000 | (p->to.reg << 16) | p->from.reg;
+		break;
+
+	case 116:	/* usat r,#sat,r */
+		o1 = 0x06C00000 | (p->to.reg << 16) | p->from.reg;
+		break;
+
+	case 117:	/* dmb */
+		o1 = 0xF57FF0BF;
+		break;
+
+	case 118:	/* yield */
+		o1 = 0xBE30;
+		break;
+
+	case 119:	/* wfe */
+		o1 = 0xBE34;
+		break;
+
+	case 120:	/* wfi */
+		o1 = 0xBE38;
+		break;
+
+	case 121:	/* sev */
+		o1 = 0xBE3C;
+		break;
+
+	case 122:	/* sevp */
+		o1 = 0xBE31;
+		break;
+
+	case 123:	/* sevl */
+		o1 = 0xBE39;
+		break;
 	}
 
 	v = p->pc;

@@ -592,10 +592,8 @@ cgen(Node *n, Node *nn)
 			else if (v < 0 && v > -256)
 				gopcode(OSUB, nodconst(-v), Z, &nod);
 			else {
-				regalloc(&nod3, l, Z);
-				gopcode(OAS, nodconst(v), Z, &nod3);
-				gopcode(OADD, &nod3, &nod, &nod);
-				regfree(&nod3);
+				gopcode(AMOVWI, nodconst(v & 0xFFFF), Z, &nod3);
+				gopcode(AMOVT, nodconst((v >> 16) & 0xFFFF), Z, &nod3);
 			}
 		}
 		gopcode(OAS, &nod, Z, &nod2);
